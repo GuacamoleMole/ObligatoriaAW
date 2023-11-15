@@ -14,60 +14,61 @@
         <h2 class="mb-4">Registro de Usuarios</h2>
         <form>
             <div class="row">
-                <div class="col-md-3">
-                    
+                <div class="col-md-4">
+                    <img src="/images/imgCoverRegistro.jpg" alt="Imagen de portada instalaciones" class="coverRegistro">
+                </div>
+                <div class="col-md-8">
+                    <!-- Campo Nombre -->
+                    <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+
+                    <!-- Campo Apellidos -->
+                    <div class="mb-3">
+                    <label for="apellidos" class="form-label">Apellidos:</label>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                    </div>
+
+                    <!-- Campo Facultad -->
+                    <div class="mb-3">
+                    <label for="facultad" class="form-label">Facultad:</label>
+                    <input type="text" class="form-control" id="facultad" name="facultad" required>
+                    </div>
+
+                    <!-- Campos Curso y Grupo -->
+                    <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="curso" class="form-label">Curso:</label>
+                        <input type="text" class="form-control" id="curso" name="curso" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="grupo" class="form-label">Grupo:</label>
+                        <input type="text" class="form-control" id="grupo" name="grupo" required>
+                    </div>
+                    </div>
+                    <!-- Campo email -->
+                    <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="mb-3">
+                    <label for="contrasena" class="form-label">Contraseña:</label>
+                    <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                    </div>
+
+                    <!-- Campo Imagen de Perfil -->
+                    <div class="mb-3">
+                    <label for="imagenPerfil" class="form-label">Imagen de Perfil:</label>
+                    <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil">
+                    </div>
+
+                    <!-- Botón de Registro -->
+                    <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </div>
-
-            <!-- Campo Nombre -->
-            <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
-            </div>
-
-            <!-- Campo Apellidos -->
-            <div class="mb-3">
-            <label for="apellidos" class="form-label">Apellidos:</label>
-            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-            </div>
-
-            <!-- Campo Facultad -->
-            <div class="mb-3">
-            <label for="facultad" class="form-label">Facultad:</label>
-            <input type="text" class="form-control" id="facultad" name="facultad" required>
-            </div>
-
-            <!-- Campos Curso y Grupo -->
-            <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="curso" class="form-label">Curso:</label>
-                <input type="text" class="form-control" id="curso" name="curso" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="grupo" class="form-label">Grupo:</label>
-                <input type="text" class="form-control" id="grupo" name="grupo" required>
-            </div>
-            </div>
-            <!-- Campo email -->
-            <div class="mb-3">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-
-            <!-- Campo Contraseña -->
-            <div class="mb-3">
-            <label for="contrasena" class="form-label">Contraseña:</label>
-            <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-            </div>
-
-            <!-- Campo Imagen de Perfil -->
-            <div class="mb-3">
-            <label for="imagenPerfil" class="form-label">Imagen de Perfil:</label>
-            <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil">
-            </div>
-
-            <!-- Botón de Registro -->
-            <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
         </div>
     </body>

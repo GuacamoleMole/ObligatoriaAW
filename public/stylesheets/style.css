@@ -49,8 +49,21 @@ html {
   color: #FFA900;
 }
 
+/*
+Estilos de la página de registro
+*/
+.coverRegistro {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 2rem 0 0 2rem;
+}
 
-
+@media screen and (max-width: 767px) {
+  .coverRegistro{
+    border-radius: 2rem;
+  }
+}
 
 /* 
 Estilos del footer
