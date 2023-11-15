@@ -13,6 +13,22 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Ficheros estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Ruta de registro
+app.get("/registroUsuario", function(request, response,next) {
+  response.status(200);
+  response.render("registroUsuario");
+});
+
+//Ruta inicio de sesión
+app.get("/login", function(request, response,next) {
+  response.status(200);
+  response.render("login");
+});
+
+// TODO: todo esto hay que reorganizarlo
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +52,14 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(3001, function(err) {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log("Servidor corriendo en el puerto 3001");
+  }
 });
 
 module.exports = app;

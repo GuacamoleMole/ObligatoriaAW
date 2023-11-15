@@ -1,8 +1,113 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+ /*
+ Estilos sobre el body, html y todos los container de las páginas
+ */
+ body {
+  font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+  /* Necesario para que el footer se quede abajo */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+html {
+  height: 100%; /* Necesario para que el footer se quede abajo */
 }
 
-a {
-  color: #00B7FF;
+.container {
+  flex: 1; /* Necesario para que el footer se quede abajo */
+}
+
+/*  
+ Estilos navbar 
+*/
+
+.navbar {
+  background-color: #7e10a3;
+  padding: 1rem;
+  box-shadow: 0px 2px 5px #7e10a3;
+}
+
+.navbar-collapse {
+  align-items: center;
+  justify-content: space-between;
+} 
+
+.navbar-brand {
+  height: 3rem;
+}
+
+.navbar-brand:hover {
+  cursor: pointer;
+}
+
+.nav-link {
+  color: white;
+  transition: all .1s ease-in-out;
+  font-weight: 600;
+} 
+
+.nav-link:hover {
+  color: #FFA900;
+}
+
+
+
+
+/* 
+Estilos del footer
+*/
+
+.footer-container {
+  display: flex;
+  color: white;
+  background-color: #7e10a3;
+  padding: 3rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.footer-text-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footer-text {
+  transition: all .2s ease-in-out;
+  font-weight: 600;
+  margin: .5rem;
+}
+
+.footer-text:hover {
+  color: #FFA900;
+  cursor: pointer;
+}
+
+.footer-logo {
+  height: 2rem;
+  margin-right: 2rem;
+}
+
+.footer-logo:hover {
+  cursor: pointer;
+}
+
+.footer-icons-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imagen-logo {
+  height: 2rem;
+  width: 2rem;
+  margin: .5rem;
+}
+
+.imagen-logo:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-brand{
+      display: none;
+  }
 }
