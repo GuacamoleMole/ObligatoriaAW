@@ -46,6 +46,7 @@ app.post("/registroUsuario", function(request, response, next) {
   datos.email = request.body.email;
   datos.contrasena = request.body.contrasena;
   datos.imagenPerfil = request.body.imagenPerfil;
+  datos.rol = 'usuario'
   request.session.currentUser = datos;
   // Haz algo con los datos (por ejemplo, guardarlos en la base de datos)
 
