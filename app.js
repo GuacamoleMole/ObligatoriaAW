@@ -1,9 +1,11 @@
 "use strict";
 const conf = require("./database/configuration")
+
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
+const expressValidator = require('express-validator');
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
@@ -12,6 +14,7 @@ const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
 var app = express();
 
+// inicialización engine de vistas
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -22,10 +25,16 @@ app.use(session({
   store: sessionStore
 }))
 
-//app.use(morgan('dev'));
+// middlewares predefinidos
+// morgan (registro peticiones)
+app.use(morgan('dev'));
+// static (sirce contenido estático)
 app.use(express.static(path.join(__dirname, 'public')));
+// json y urlencoded (en vez de body-parser)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// express-validator (validación de formularios)
+app.use(expressValidator());
 
 //Ruta de registro
 app.get("/registroUsuario", function(request, response,next) {
@@ -48,6 +57,24 @@ app.post("/registroUsuario", function(request, response, next) {
   datos.imagenPerfil = request.body.imagenPerfil;
   datos.rol = 'usuario'
   request.session.currentUser = datos;
+
+  // Checks de validación
+  // checkeamos que los campos obligatorios no estén vacíos (redundante con el front, da mayor seguridad)
+  check("nombre", "El nombre es obligatorio").notEmpty();
+  check("apellidos", "Los apellidos son obligatorios").notEmpty();
+  check("facultad", "La facultad es obligatoria").notEmpty();
+  check("curso", "El curso es obligatorio").notEmpty();
+  check("grupo", "El grupo es obligatorio").notEmpty();
+  check("email", "El email es obligatorio").notEmpty();
+  check("contrasena", "La contraseña es obligatoria").notEmpty();
+
+  // checkeamos que el email sea un email
+  check("email", "El email no es válido").isEmail();
+
+  // checkeamos que el nombre y apellidos no tengasn números
+  check("nombre", "El nombre no puede contener números").isAlpha();
+  check("apellidos", "Los apellidos no pueden contener números").isAlpha();
+  
   // Haz algo con los datos (por ejemplo, guardarlos en la base de datos)
 
   // Enviar una respuesta de éxito
