@@ -63,7 +63,8 @@ app.post("/registroUsuario", function(request, response, next) {
   datos.email = request.body.email;
   datos.contrasena = request.body.contrasena;
   datos.imagen = request.file.buffer; //Buffer del multer para guardar la imagen 
-  datos.rol = 'usuario'
+  datos.rol = 'usuario';
+  datos.validado = false; //Siempre hay que ser validador por un Admin
   request.session.currentUser = datos;
 
   // Checks de validación
