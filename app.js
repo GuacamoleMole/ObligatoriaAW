@@ -51,7 +51,7 @@ app.get("/registroUsuario", function(request, response,next) {
 });
 
 // Ruta de registro (POST)
-app.post("/registroUsuario", function(request, response, next) {
+app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(request, response, next) {
   // Recoger los datos del formulario
   console.log(request.body);
   let datos = {};
