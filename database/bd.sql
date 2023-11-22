@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-11-2023 a las 21:45:49
+-- Tiempo de generación: 22-11-2023 a las 21:53:57
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -44,7 +44,7 @@ CREATE TABLE `UCM_AW_RIU_INS_Instalaciones` (
   `nombre` varchar(40) NOT NULL,
   `aforo` int(11) NOT NULL,
   `tipoReserva` varchar(40) NOT NULL,
-  `imagen` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`imagen`)),
+  `imagen` blob NOT NULL,
   `disponibilidad` varchar(40) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -173,7 +173,7 @@ ALTER TABLE `UCM_AW_RIU_USU_Usuarios`
 -- Filtros para la tabla `UCM_AW_RIU_MEN_Mensajes`
 --
 ALTER TABLE `UCM_AW_RIU_MEN_Mensajes`
-  ADD CONSTRAINT `CONSTRAINT_DEST` FOREIGN KEY (`id_dest`) REFERENCES `UCM_AW_RIU_MEN_Mensajes` (`id`),
+  ADD CONSTRAINT `CONSTRAINT_DEST` FOREIGN KEY (`id_dest`) REFERENCES `UCM_AW_RIU_USU_Usuarios` (`id`),
   ADD CONSTRAINT `CONSTRAINT_ORI` FOREIGN KEY (`id_origen`) REFERENCES `UCM_AW_RIU_USU_Usuarios` (`id`);
 
 --
