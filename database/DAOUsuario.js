@@ -1,6 +1,6 @@
 "use strict";
 const db = require("./configuration"); // Info de la conexion con la BBDD
-
+const usuQueries = require("./queries/usuQueries")
 class DAOUsuario {
     pool;
 
@@ -14,9 +14,7 @@ class DAOUsuario {
                 callback(err)
             } else {
                 connection.query(
-                    //TODO Imagen BLOB
-                    `INSERT INTO  UCM_AW_RIU_USU_Usuarios(nombre,apellidos,facultad,email,contraseña,curso,grupo,rol)
-                    VALUES (?,?,?,?,?,?,?,?)`,
+                    usuQueries.insertarUsuario,
                     [usr.nombre,usr.apellidos,usr.facultad,usr.email,usr.contrasena,usr.curso,usr.grupo,usr.rol],
                     function(err, rows){
                         connection.release();
@@ -25,6 +23,29 @@ class DAOUsuario {
                         }
                         else{
                             callback(null,rows.insertId) //devolvemos el id devulto por la BD
+                        }
+                    }
+                )
+            }
+        });
+    }
+
+    buscarPorEmail (eml,callback){
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err)
+            } else {
+                connection.query(
+                    usuQueries.buscarPorEmail,
+                    [eml],
+                    function(err, rows){
+                        connection.release();
+                        if(err){
+                            callback(err,null);
+                        }
+                        else{
+                            let data = JSON.parse(JSON.stringify(rows));
+                            callback(null, data[0]); //devolvemos solo uno, ya que email es UNIQUE
                         }
                     }
                 )

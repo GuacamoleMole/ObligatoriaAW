@@ -9,6 +9,8 @@ const expressValidator = require('express-validator');
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
+const multer = require("multer");
+const multerFactory = multer({storage: multer.memoryStorage()});
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
 var app = express();
@@ -60,7 +62,7 @@ app.post("/registroUsuario", function(request, response, next) {
   datos.grupo = request.body.grupo;
   datos.email = request.body.email;
   datos.contrasena = request.body.contrasena;
-  datos.imagenPerfil = request.body.imagenPerfil;
+  datos.imagen = request.file.buffer; //Buffer del multer para guardar la imagen 
   datos.rol = 'usuario'
   request.session.currentUser = datos;
 
