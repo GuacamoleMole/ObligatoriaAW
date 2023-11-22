@@ -9,7 +9,6 @@ const expressValidator = require('express-validator');
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
-
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
 var app = express();
@@ -35,6 +34,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // express-validator (validación de formularios)
 app.use(expressValidator());
+
+//Ruta inicio de sesión
+app.get("/login", function(request, response,next) {
+  response.status(200);
+  response.render("login");
+});
+
 
 //Ruta de registro
 app.get("/registroUsuario", function(request, response,next) {
@@ -79,33 +85,42 @@ app.post("/registroUsuario", function(request, response, next) {
 
   // Enviar una respuesta de éxito
   response.status(200).send("¡Registro exitoso!");
+
+  //Rederigimos a la cuenta del usuario
+  res.redirect(`/usuario/${email}`);
+
 });
 
-//Ruta inicio de sesión
-app.get("/login", function(request, response,next) {
-  response.status(200);
-  response.render("login");
+// Ruta para mostrar la página de usuario con EJS
+app.get('/usuario/:email', (req, res) => {
+  // Obtener el parámetro de la URL
+  const email = req.params.email;
+  //TODO Como email es UNIQUE, buscar todos los datos en BBDD
+  // Renderizar la plantilla EJS y pasar el parámetro
+  res.render('usuario', { email });
 });
 
-app.post("")
 // // TODO: todo esto hay que reorganizarlo
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Middleware para manejar rutas no encontradas
+app.use((request, response, next) => {
+  const error = new Error("Página no encontrada");
+  error.status = 404;
+  next(error);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+//middleware de errores 
+app.use((error, request, response, next) => {
+  // Código 500: Internal server error
+  response.status(error.status || 500);
+  response.render("error", {
+    status : error.status,
+    mensaje: error.message,
+    pila: error.stack
+  });
 });
 
 app.listen(3001, function(err) {
