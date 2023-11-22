@@ -1,6 +1,7 @@
 "use strict";
 const db = require("./configuration"); // Info de la conexion con la BBDD
 const usuQueries = require("./queries/usuQueries")
+
 class DAOUsuario {
     pool;
 
@@ -15,7 +16,7 @@ class DAOUsuario {
             } else {
                 connection.query(
                     usuQueries.insertarUsuario,
-                    [usr.nombre,usr.apellidos,usr.facultad,usr.email,usr.contrasena,usr.curso,usr.grupo,usr.rol],
+                    [usr.nombre,usr.apellidos,usr.facultad,usr.email,usr.contrasena,usr.curso,usr.grupo,usr.foto,usr.rol,usr.validado],
                     function(err, rows){
                         connection.release();
                         if(err){
@@ -58,4 +59,4 @@ class DAOUsuario {
     }
 }
 
-module.exports = DAODestino;
+module.exports = DAOUsuario;
