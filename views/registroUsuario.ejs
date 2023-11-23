@@ -11,6 +11,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     </head>
     <body>
+        <% if (errores.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                La información intruducida no es correcta:
+                <ul>
+                    <% errores.foreEach(function(error) { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
         <div class="container mt-5">
         <h2 class="mb-4">Registro de Usuarios</h2>
         <form method="POST" action="/registroUsuario">
