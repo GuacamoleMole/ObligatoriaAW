@@ -10,6 +10,8 @@ const expressValidator = require('express-validator');
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
 const multer = require("multer");
+const { check, validationResult } = require("express-validator");
+const { type } = require("os");
 const multerFactory = multer({storage: multer.memoryStorage()});
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
@@ -34,38 +36,37 @@ app.use(express.static(path.join(__dirname, 'public')));
 // json y urlencoded (en vez de body-parser)
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// express-validator (validación de formularios)
-app.use(expressValidator());
 
 //Ruta inicio de sesión
-app.get("/login", function(request, response,next) {
-  response.status(200);
-  response.render("login");
+app.get("/login", function(req, res, next) {
+  res.status(200);
+  res.render("login");
 });
 
 
 //Ruta de registro
-app.get("/registroUsuario", function(request, response,next) {
-  response.status(200);
-  response.render("registroUsuario");
+app.get("/registroUsuario", function(req, res, next) {
+  res.status(200);
+  res.render("registroUsuario", { errores: {} });
 });
 
 // Ruta de registro (POST)
-app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(request, response, next) {
+app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(req, res, next) {
   // Recoger los datos del formulario
-  console.log(request.body);
+  console.log(req.body);
   let datos = {};
-  datos.nombre = request.body.nombre;
-  datos.apellidos = request.body.apellidos;
-  datos.facultad = request.body.facultad;
-  datos.curso = request.body.curso;
-  datos.grupo = request.body.grupo;
-  datos.email = request.body.email;
-  datos.contrasena = request.body.contrasena;
-  datos.imagen = request.file.buffer; //Buffer del multer para guardar la imagen 
+  datos.nombre = req.body.nombre;
+  datos.apellidos = req.body.apellidos;
+  datos.facultad = req.body.facultad;
+  datos.curso = req.body.curso;
+  datos.grupo = req.body.grupo;
+  datos.email = req.body.email;
+  datos.contrasena = req.body.contrasena;
+  // Puede ser que los usuarios no añadan imagen y haya que poner una por defecto
+  // datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
   datos.rol = 'usuario';
   datos.validado = false; //Siempre hay que ser validador por un Admin
-  request.session.currentUser = datos;
+  req.session.currentUser = datos;
 
   // Checks de validación
   // checkeamos que los campos obligatorios no estén vacíos (redundante con el front, da mayor seguridad)
@@ -81,17 +82,24 @@ app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(reque
   check("email", "El email no es válido").isEmail();
 
   // checkeamos que el nombre y apellidos no tengasn números
-  check("nombre", "El nombre no puede contener números").isAlpha();
-  check("apellidos", "Los apellidos no pueden contener números").isAlpha();
+  check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/);
+  check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/);
   
   // Haz algo con los datos (por ejemplo, guardarlos en la base de datos)
 
-  // Enviar una respuesta de éxito
-  response.status(200).send("¡Registro exitoso!");
-
-  //Rederigimos a la cuenta del usuario
-  res.redirect(`/usuario/${email}`);
-
+  const errors = validationResult(req);
+  console.log(req.body.nombre);
+  console.log(typeof req.body.nombre);
+  if (!errors.isEmpty()) {
+    // Si hay errores, renderizamos la vista de registro de nuevo con los errores
+    return res.render("registroUsuario", { errores: errors.array() });
+  } else {
+    // Si no hay errores enviamos una respuesta de éxito
+    res.status(200).send("¡Registro exitoso!");
+    //Rederigimos a la cuenta del usuario
+    // TODO: como los email tienen ., cogería el contenido hasta el .
+    //res.redirect(`/usuario/${req.body.email}`);
+  }
 });
 
 // Ruta para mostrar la página de usuario con EJS
@@ -100,7 +108,7 @@ app.get('/usuario/:email', (req, res) => {
   const email = req.params.email;
   //TODO Como email es UNIQUE, buscar todos los datos en BBDD
   // Renderizar la plantilla EJS y pasar el parámetro
-  res.render('usuario', { email });
+  //res.render('usuario', { email });
 });
 
 // // TODO: todo esto hay que reorganizarlo
@@ -108,7 +116,7 @@ app.get('/usuario/:email', (req, res) => {
 // app.use('/users', usersRouter);
 
 // Middleware para manejar rutas no encontradas
-app.use((request, response, next) => {
+app.use((req, res, next) => {
   const error = new Error("Página no encontrada");
   error.status = 404;
   next(error);
@@ -116,10 +124,10 @@ app.use((request, response, next) => {
 
 
 //middleware de errores 
-app.use((error, request, response, next) => {
+app.use((error, req, res, next) => {
   // Código 500: Internal server error
-  response.status(error.status || 500);
-  response.render("error", {
+  res.status(error.status || 500);
+  res.render("error", {
     status : error.status,
     mensaje: error.message,
     pila: error.stack
