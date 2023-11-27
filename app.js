@@ -6,6 +6,9 @@ const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
 const expressValidator = require('express-validator');
+const bcrypt = require('bcrypt');
+const DAOUsuario = require('./database/DAOUsuario')
+const daoUsuario = new DAOUsuario();
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
@@ -15,7 +18,7 @@ const { type } = require("os");
 const multerFactory = multer({storage: multer.memoryStorage()});
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
-var app = express();
+const app = express();
 
 // inicialización engine de vistas
 app.set('views', path.join(__dirname, 'views'));
@@ -39,6 +42,8 @@ app.use(express.urlencoded({ extended: false }));
 
 //Ruta inicio de sesión
 app.get("/login", function(req, res, next) {
+  const { email, password } = req.body
+
   res.status(200);
   res.render("login");
 });
@@ -52,22 +57,6 @@ app.get("/registroUsuario", function(req, res, next) {
 
 // Ruta de registro (POST)
 app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(req, res, next) {
-  // Recoger los datos del formulario
-  console.log(req.body);
-  let datos = {};
-  datos.nombre = req.body.nombre;
-  datos.apellidos = req.body.apellidos;
-  datos.facultad = req.body.facultad;
-  datos.curso = req.body.curso;
-  datos.grupo = req.body.grupo;
-  datos.email = req.body.email;
-  datos.contrasena = req.body.contrasena;
-  // Puede ser que los usuarios no añadan imagen y haya que poner una por defecto
-  // datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
-  datos.rol = 'usuario';
-  datos.validado = false; //Siempre hay que ser validador por un Admin
-  req.session.currentUser = datos;
-
   // Checks de validación
   // checkeamos que los campos obligatorios no estén vacíos (redundante con el front, da mayor seguridad)
   check("nombre", "El nombre es obligatorio").notEmpty();
@@ -77,28 +66,40 @@ app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(req, 
   check("grupo", "El grupo es obligatorio").notEmpty();
   check("email", "El email es obligatorio").notEmpty();
   check("contrasena", "La contraseña es obligatoria").notEmpty();
-
   // checkeamos que el email sea un email
   check("email", "El email no es válido").isEmail();
-
   // checkeamos que el nombre y apellidos no tengasn números
   check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/);
   check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/);
   
-  // Haz algo con los datos (por ejemplo, guardarlos en la base de datos)
+  // Recoger los datos del formulario
+  let datos = {};
+  datos.nombre = req.body.nombre;
+  datos.apellidos = req.body.apellidos;
+  datos.facultad = req.body.facultad;
+  datos.curso = req.body.curso;
+  datos.grupo = req.body.grupo;
+  datos.email = req.body.email;
+  datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
+  if(req.file)
+    datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
+  datos.rol = 'usuario';
+  datos.validado = false; //Siempre hay que ser validador por un Admin
+  
 
   const errors = validationResult(req);
-  console.log(req.body.nombre);
-  console.log(typeof req.body.nombre);
   if (!errors.isEmpty()) {
     // Si hay errores, renderizamos la vista de registro de nuevo con los errores
     return res.render("registroUsuario", { errores: errors.array() });
   } else {
-    // Si no hay errores enviamos una respuesta de éxito
-    res.status(200).send("¡Registro exitoso!");
-    //Rederigimos a la cuenta del usuario
-    // TODO: como los email tienen ., cogería el contenido hasta el .
-    //res.redirect(`/usuario/${req.body.email}`);
+    daoUsuario.insertarUsuario(datos, (err, usr) => {
+      if (err) {
+        next(err);
+      } else {  
+        //res.redirect(`/usuario/${usr}`); usr --> id insertado
+        res.status(200).send("¡Registro exitoso!");
+      }
+    })    
   }
 });
 

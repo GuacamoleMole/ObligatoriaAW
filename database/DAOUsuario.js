@@ -16,7 +16,7 @@ class DAOUsuario {
             } else {
                 connection.query(
                     usuQueries.insertarUsuario,
-                    [usr.nombre,usr.apellidos,usr.facultad,usr.email,usr.contrasena,usr.curso,usr.grupo,usr.foto,usr.rol,usr.validado],
+                    [usr.nombre,usr.apellidos,usr.facultad,usr.email,usr.contrasena,usr.curso,usr.grupo,usr.imagen,usr.rol,usr.validado],
                     function(err, rows){
                         connection.release();
                         if(err){
