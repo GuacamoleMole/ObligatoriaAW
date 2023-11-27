@@ -41,12 +41,32 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //Ruta inicio de sesión
-app.get("/login", function(req, res, next) {
-  const { email, password } = req.body
-
+app.get("/login", function(req, res) {
   res.status(200);
   res.render("login");
 });
+
+app.post("/login", function(req, res) {
+  const { correo, contrasena } = req.body
+  daoUsuario.buscarPorEmail(correo, (err, usr) => {
+    if (err) {
+      next(err);
+    } else {  
+      bcrypt.compare(contrasena, usr.contraseña, (err, valid) => {
+        if (err) {
+            next(err);
+        } 
+        if (valid) {
+            req.session.user = { correo, id: usr.id };
+            res.send("Sesión iniciada.");
+        } else {
+            res.status(401).end(); // contraseña invalida
+        }
+      });
+    }
+  });    
+});
+
 
 
 //Ruta de registro
@@ -99,12 +119,12 @@ app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(req, 
         //res.redirect(`/usuario/${usr}`); usr --> id insertado
         res.status(200).send("¡Registro exitoso!");
       }
-    })    
+    });    
   }
 });
 
 // Ruta para mostrar la página de usuario con EJS
-app.get('/usuario/:email', (req, res) => {
+app.get('/usuario/:id', (req, res) => {
   // Obtener el parámetro de la URL
   const email = req.params.email;
   //TODO Como email es UNIQUE, buscar todos los datos en BBDD
@@ -112,9 +132,6 @@ app.get('/usuario/:email', (req, res) => {
   //res.render('usuario', { email });
 });
 
-// // TODO: todo esto hay que reorganizarlo
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res, next) => {
@@ -122,7 +139,6 @@ app.use((req, res, next) => {
   error.status = 404;
   next(error);
 });
-
 
 //middleware de errores 
 app.use((error, req, res, next) => {
