@@ -42,31 +42,44 @@ app.use(express.urlencoded({ extended: false }));
 //Ruta inicio de sesión
 app.get("/login", function(req, res) {
   res.status(200);
-  res.render("login");
+  res.render("login" , { errores: {} });
 });
 
-app.post("/login", function(req, res) {
-  const { correo, contrasena } = req.body
-  daoUsuario.buscarPorEmail(correo, (err, usr) => {
-    if (err) {
-      next(err);
-    } else {  
-      bcrypt.compare(contrasena, usr.contraseña, (err, valid) => {
-        if (err) {
-            next(err);
-        } 
-        if (valid) {
-            req.session.user = { correo, id: usr.id };
-            res.send("Sesión iniciada.");
-        } else {
-            res.status(401).end(); // contraseña invalida
-        }
-      });
+app.post(
+  "/login", 
+  check("email", "El email es obligatorio").notEmpty(),
+  check("contrasena", "La contraseña es obligatoria").notEmpty(),
+  // checkeamos que el email sea un email
+  check("email", "El email no es válido").isEmail(),
+  function(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+      // Si hay errores, renderizamos la vista de registro de nuevo con los errores
+      return res.render("login", { errores: errors.array() });
     }
-  });    
-});
-
-
+    // Si no hay errores, continuamos
+    const { correo, contrasena } = req.body
+    daoUsuario.buscarPorEmail(correo, (err, usr) => {
+      if (err) {
+        //TODO: enviar mensaje de error al usuario si no encuentra email en BD?
+        next(err);
+      } else {  
+        bcrypt.compare(contrasena, usr.contraseña, (err, valid) => {
+          if (err) {
+              next(err);
+          } 
+          if (valid) {
+              req.session.user = { correo, id: usr.id };
+              res.send("Sesión iniciada.");
+          } else {
+              res.status(401).end(); // contraseña invalida
+          }
+        });
+      }
+    });    
+  }
+);
 
 //Ruta de registro
 app.get("/registroUsuario", function(req, res, next) {
@@ -98,32 +111,32 @@ app.post(
       console.log(errors.array());
       // Si hay errores, renderizamos la vista de registro de nuevo con los errores
       return res.render("registroUsuario", { errores: errors.array() });
-    } else {
-      // Recoger los datos del formulario
-      let datos = {};
-      datos.nombre = req.body.nombre;
-      datos.apellidos = req.body.apellidos;
-      datos.facultad = req.body.facultad;
-      datos.curso = req.body.curso;
-      datos.grupo = req.body.grupo;
-      datos.email = req.body.email;
-      datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
-
-      if(req.file)
-        datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
-      datos.rol = 'usuario';
-      datos.validado = false; //Siempre hay que ser validador por un Admin
-
-      daoUsuario.insertarUsuario(datos, (err, usr) => {
-        if (err) {
-          // TODO: informar al usuario de que existe email ya registrado?
-          next(err);
-        } else {  
-          //res.redirect(`/usuario/${usr}`); usr --> id insertado
-          res.status(200).send("¡Registro exitoso!");
-        }
-      });    
     }
+    // Si no hay errores, continuamos
+    // Recoger los datos del formulario
+    let datos = {};
+    datos.nombre = req.body.nombre;
+    datos.apellidos = req.body.apellidos;
+    datos.facultad = req.body.facultad;
+    datos.curso = req.body.curso;
+    datos.grupo = req.body.grupo;
+    datos.email = req.body.email;
+    datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
+
+    if(req.file)
+      datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
+    datos.rol = 'usuario';
+    datos.validado = false; //Siempre hay que ser validador por un Admin
+
+    daoUsuario.insertarUsuario(datos, (err, usr) => {
+      if (err) {
+        // TODO: informar al usuario de que existe email ya registrado?
+        next(err);
+      } else {  
+        //res.redirect(`/usuario/${usr}`); usr --> id insertado
+        res.status(200).send("¡Registro exitoso!");
+      }
+    }); 
   }
 );
 

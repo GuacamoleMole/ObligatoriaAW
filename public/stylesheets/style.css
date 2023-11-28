@@ -65,6 +65,11 @@ Estilos de la página de registro
   }
 }
 
+.campoIncorrecto {
+  color: red;
+  font-size: 0.8rem;
+}
+
 /* 
 Estilos del footer
 */
