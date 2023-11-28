@@ -5,7 +5,6 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
-const expressValidator = require('express-validator');
 const bcrypt = require('bcrypt');
 const DAOUsuario = require('./database/DAOUsuario')
 const daoUsuario = new DAOUsuario();
@@ -13,7 +12,7 @@ const daoUsuario = new DAOUsuario();
 // const usersRouter = require('./routes/users');
 const morgan = require('morgan');
 const multer = require("multer");
-const { check, validationResult } = require("express-validator");
+const { body, check, validationResult } = require("express-validator");
 const { type } = require("os");
 const multerFactory = multer({storage: multer.memoryStorage()});
 const MySQLStore = mysqlSession(session);
@@ -76,52 +75,57 @@ app.get("/registroUsuario", function(req, res, next) {
 });
 
 // Ruta de registro (POST)
-app.post("/registroUsuario", multerFactory.single('imagenPerfil'),function(req, res, next) {
+app.post(
+  "/registroUsuario",
   // Checks de validación
   // checkeamos que los campos obligatorios no estén vacíos (redundante con el front, da mayor seguridad)
-  check("nombre", "El nombre es obligatorio").notEmpty();
-  check("apellidos", "Los apellidos son obligatorios").notEmpty();
-  check("facultad", "La facultad es obligatoria").notEmpty();
-  check("curso", "El curso es obligatorio").notEmpty();
-  check("grupo", "El grupo es obligatorio").notEmpty();
-  check("email", "El email es obligatorio").notEmpty();
-  check("contrasena", "La contraseña es obligatoria").notEmpty();
+  multerFactory.single('imagenPerfil'),
+  check("nombre", "El nombre es obligatorio").notEmpty(),
+  check("apellidos", "Los apellidos son obligatorios").notEmpty(),
+  check("facultad", "La facultad es obligatoria").notEmpty(),
+  check("curso", "El curso es obligatorio").notEmpty(),
+  check("grupo", "El grupo es obligatorio").notEmpty(),
+  check("email", "El email es obligatorio").notEmpty(),
+  check("contrasena", "La contraseña es obligatoria").notEmpty(),
   // checkeamos que el email sea un email
-  check("email", "El email no es válido").isEmail();
+  check("email", "El email no es válido").isEmail(),
   // checkeamos que el nombre y apellidos no tengasn números
-  check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/);
-  check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/);
-  
-  // Recoger los datos del formulario
-  let datos = {};
-  datos.nombre = req.body.nombre;
-  datos.apellidos = req.body.apellidos;
-  datos.facultad = req.body.facultad;
-  datos.curso = req.body.curso;
-  datos.grupo = req.body.grupo;
-  datos.email = req.body.email;
-  datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
-  if(req.file)
-    datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
-  datos.rol = 'usuario';
-  datos.validado = false; //Siempre hay que ser validador por un Admin
-  
+  check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/),
+  check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors.array());
+      // Si hay errores, renderizamos la vista de registro de nuevo con los errores
+      return res.render("registroUsuario", { errores: errors.array() });
+    } else {
+      // Recoger los datos del formulario
+      let datos = {};
+      datos.nombre = req.body.nombre;
+      datos.apellidos = req.body.apellidos;
+      datos.facultad = req.body.facultad;
+      datos.curso = req.body.curso;
+      datos.grupo = req.body.grupo;
+      datos.email = req.body.email;
+      datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    // Si hay errores, renderizamos la vista de registro de nuevo con los errores
-    return res.render("registroUsuario", { errores: errors.array() });
-  } else {
-    daoUsuario.insertarUsuario(datos, (err, usr) => {
-      if (err) {
-        next(err);
-      } else {  
-        //res.redirect(`/usuario/${usr}`); usr --> id insertado
-        res.status(200).send("¡Registro exitoso!");
-      }
-    });    
+      if(req.file)
+        datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
+      datos.rol = 'usuario';
+      datos.validado = false; //Siempre hay que ser validador por un Admin
+
+      daoUsuario.insertarUsuario(datos, (err, usr) => {
+        if (err) {
+          // TODO: informar al usuario de que existe email ya registrado?
+          next(err);
+        } else {  
+          //res.redirect(`/usuario/${usr}`); usr --> id insertado
+          res.status(200).send("¡Registro exitoso!");
+        }
+      });    
+    }
   }
-});
+);
 
 // Ruta para mostrar la página de usuario con EJS
 app.get('/usuario/:id', (req, res) => {
