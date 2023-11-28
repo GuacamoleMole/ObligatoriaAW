@@ -41,6 +41,8 @@ $(document).ready(() => {
         } // else if check that email is valid (using regex having characters, an @ symbol, and a domain)
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
             errorEmail.text('El campo email no es válido');
+        } else if (!/^[a-zA-Z0-9]+@ucm.es$/.test(valor)) {
+            errorEmail.text('El email debe ser de la UCM');
         } else {
             errorEmail.text('');
         }

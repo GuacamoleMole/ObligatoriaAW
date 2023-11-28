@@ -1,6 +1,7 @@
  /*
  Estilos sobre el body, html y todos los container de las páginas
  */
+
  body {
   font-family: 'Roboto', 'Trebuchet MS', sans-serif;
   /* Necesario para que el footer se quede abajo */
@@ -70,6 +71,39 @@ Estilos de la página de registro
   font-size: 0.8rem;
 }
 
+/*
+Estilos de la página de usuario
+*/
+
+.avatarUsuario {
+  height: 7rem;
+  width: 7rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 1rem;
+}
+
+.datosUsuario {
+  background-color:#7e10a39e;
+  border-radius: 1rem 0;
+  color: white;
+}
+
+.datosTexto {
+  margin: 1rem 2rem;
+  padding-bottom: 2rem;
+}
+
+.campoUsuario {
+  font-weight: 800;
+}
+
+.infoUsuario {
+  color: black;
+  margin-left: .5rem;
+  font-weight: 600;
+}
+
 /* 
 Estilos del footer
 */
@@ -81,7 +115,7 @@ Estilos del footer
   padding: 3rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 100%;
+  width: 110%;
 }
 
 .footer-text-container {

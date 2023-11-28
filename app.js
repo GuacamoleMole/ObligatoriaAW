@@ -105,6 +105,8 @@ app.post(
   // checkeamos que el nombre y apellidos no tengasn números
   check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/),
   check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/),
+  //checkeamos que sea un email de la UCM
+  check("email", "El email debe ser de la UCM").matches(/^[a-zA-Z0-9]+@ucm.es$/),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -143,10 +145,11 @@ app.post(
 // Ruta para mostrar la página de usuario con EJS
 app.get('/usuario/:id', (req, res) => {
   // Obtener el parámetro de la URL
-  const email = req.params.email;
-  //TODO Como email es UNIQUE, buscar todos los datos en BBDD
+  const id = req.params.id;
+  //TODO Como email es UNIQUE, buscar todos los datos en BBDD y pasarlos a la vista
   // Renderizar la plantilla EJS y pasar el parámetro
   //res.render('usuario', { email });
+  res.render('cuentaUsuario', { id });
 });
 
 
