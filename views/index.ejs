@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instalaciones</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="javascript/validacionJQuery.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
+    <%- include("header") %> <!-- subplantilla -->
+    <div class="container mt-5">
+      <h1>Instalaciones disponibles para reservar</h1>
+
+      <div class="container contenedorInstalaciones">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+          <div class="col">
+            <div class="card">
+              <a href="/<%=dest.nombre%>">
+                <img class="card-img-top" src="/images/<%=dest.imagen[0]%>" alt="barcelona">
+              </a>
+              <div class="card-body">
+                <h3 class="card-title"></h3>
+                <p class="card-text">€</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <%- include("footer") %>
   </body>
 </html>

@@ -142,6 +142,20 @@ app.post(
   }
 );
 
+//Ruta página principal, en la que se muestran las instalaciones a reservar
+app.get("/", function(req, res) {
+  res.status(200);
+  res.render("index");
+});
+
+//Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
+app.get("/instalacion/:id", function(req, res) {
+  const id = req.params.id;
+  res.status(200);
+  // TODO: buscar el id y pasar el nombre e información de la instalación
+  res.render("instalacion", {id});
+});
+
 // Ruta para mostrar la página de usuario con EJS
 app.get('/usuario/:id', (req, res) => {
   // Obtener el parámetro de la URL
