@@ -102,9 +102,9 @@ app.post(
   check("contrasena", "La contraseña es obligatoria").notEmpty(),
   // checkeamos que el email sea un email
   check("email", "El email no es válido").isEmail(),
-  // checkeamos que el nombre y apellidos no tengasn números
-  check("nombre", "El nombre no puede contener números").matches(/^[a-zA-Z]+$/),
-  check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-Z]+$/),
+  // checkeamos que el nombre y apellidos no tengan números (aceptar tildes, diéresis y ñ)
+  check("nombre", "El nombre no puede contener números").matches(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g),
+  check("apellidos", "Los apellidos no pueden contener números").matches(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g),
   //checkeamos que sea un email de la UCM
   check("email", "El email debe ser de la UCM").matches(/^[a-zA-Z0-9]+@ucm.es$/),
   (req, res, next) => {
