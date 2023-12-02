@@ -10,12 +10,21 @@
               <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">Contacto</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">Sobre nosotros</a>
-              </li>
+              <% if (ses !== undefined) {  %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Mensajes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Mi perfil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout.html">Cerrar sesión</a>
+                </li>
+              <% } else { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/login">Log in</a>
+                </li>
+              <% }; %>
             </ul>
           </div>
         </div>

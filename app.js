@@ -42,7 +42,14 @@ app.use(express.urlencoded({ extended: false }));
 //Ruta página principal, en la que se muestran las instalaciones a reservar
 app.get("/", function(req, res) {
   res.status(200);
-  res.render("index");
+
+  let datos = {};
+  if(req.session.user !== undefined){
+    console.log("Sesion Abierta")
+    datos.session = request.session.user.correo;
+  }
+
+  res.render("index", {datos});
 });
 
 //Ruta inicio de sesión
@@ -77,7 +84,7 @@ app.post(
           } 
           if (valid) {
               req.session.user = { correo, id: usr.id };
-              res.send("Sesión iniciada.");
+              res.redirect("/");
           } else {
               res.status(401).end(); // contraseña invalida
           }

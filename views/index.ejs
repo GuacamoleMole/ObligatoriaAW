@@ -13,20 +13,63 @@
   </head>
   <body>
     <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
-    <%- include("header") %> <!-- subplantilla -->
+    <%- include("header", { ses: datos.session }) %> <!-- subplantilla -->
     <div class="container mt-5">
       <h1>Instalaciones disponibles para reservar</h1>
-
       <div class="container contenedorInstalaciones">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-          <div class="col">
+          <div class="col tarjetaInstalacion">
             <div class="card">
               <a href="/instalaciones/ejemplo">
                 <img class="card-img-top" src="/images/avatarPredeterminado.jpg" alt="imagen instalación">
               </a>
-              <div class="card-body">
-                <h3 class="card-title"></h3>
-                <p class="card-text"></p>
+              <div class="card-body cuerpoTarjetaInstalacion">
+                <h3 class="card-title">Titulo instalación muy largo</h3>
+                <p class="card-text">Breve descripción de la instalación</p>
+              </div>
+            </div>
+          </div>
+          <div class="col tarjetaInstalacion">
+            <div class="card">
+              <a href="/instalaciones/ejemplo">
+                <img class="card-img-top" src="/images/avatarPredeterminado.jpg" alt="imagen instalación">
+              </a>
+              <div class="card-body cuerpoTarjetaInstalacion">
+                <h3 class="card-title">Titulo instalación</h3>
+                <p class="card-text">Breve descripción de la instalación</p>
+              </div>
+            </div>
+          </div>
+          <div class="col tarjetaInstalacion">
+            <div class="card">
+              <a href="/instalaciones/ejemplo">
+                <img class="card-img-top" src="/images/avatarPredeterminado.jpg" alt="imagen instalación">
+              </a>
+              <div class="card-body cuerpoTarjetaInstalacion">
+                <h3 class="card-title">Titulo instalación</h3>
+                <p class="card-text">Breve descripción de la instalación</p>
+              </div>
+            </div>
+          </div>
+          <div class="col tarjetaInstalacion">
+            <div class="card">
+              <a href="/instalaciones/ejemplo">
+                <img class="card-img-top" src="/images/avatarPredeterminado.jpg" alt="imagen instalación">
+              </a>
+              <div class="card-body cuerpoTarjetaInstalacion">
+                <h3 class="card-title">Titulo instalación</h3>
+                <p class="card-text">Breve descripción de la instalación</p>
+              </div>
+            </div>
+          </div>
+          <div class="col tarjetaInstalacion">
+            <div class="card">
+              <a href="/instalaciones/ejemplo">
+                <img class="card-img-top" src="/images/avatarPredeterminado.jpg" alt="imagen instalación">
+              </a>
+              <div class="card-body cuerpoTarjetaInstalacion">
+                <h3 class="card-title">Titulo instalación</h3>
+                <p class="card-text">Breve descripción de la instalación</p>
               </div>
             </div>
           </div>

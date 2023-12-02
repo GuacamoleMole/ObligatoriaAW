@@ -115,6 +115,22 @@ Estilos de la página de usuario
   font-weight: 700;
 }
 
+/*
+Estilos de la página main
+*/
+
+.contenedorInstalaciones {
+  margin-top: 3rem;
+}
+.tarjetaInstalacion {
+  margin: 3rem 0 3rem 0;
+}
+
+.cuerpoTarjetaInstalacion {
+  height: 10rem;
+  overflow: scroll;
+}
+
 /* 
 Estilos del footer
 */
