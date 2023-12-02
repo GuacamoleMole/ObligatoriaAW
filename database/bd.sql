@@ -89,7 +89,7 @@ CREATE TABLE `UCM_AW_RIU_USU_Usuarios` (
   `apellidos` varchar(40) NOT NULL,
   `facultad` varchar(40) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `contraseña` varchar(40) NOT NULL,
+  `contraseña` varchar(255) NOT NULL,
   `curso` int(10) NOT NULL,
   `grupo` varchar(10) NOT NULL,
   `foto` blob DEFAULT NULL,
