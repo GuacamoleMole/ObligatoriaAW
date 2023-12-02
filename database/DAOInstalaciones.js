@@ -54,6 +54,27 @@ class DAOInstalaciones {
         });
     }
 
+    buscarTodasInstalaciones (callback) {
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err);
+            } else {
+                connection.query(
+                    insQueries.buscarTodas,
+                    function (err, rows) {
+                        connection.release();
+                        if (err) {
+                            callback (err, null);
+                        } else {
+                            let data = JSON.parse(JSON.stringify(rows));
+                            callback(null, data); // devolvemos todas las filas
+                        }
+                    }
+                )
+            }
+        })
+    }
+
     terminarConexion(callback) {
         this.pool.end();
     }

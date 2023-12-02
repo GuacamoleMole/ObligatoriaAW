@@ -39,6 +39,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//Ruta página principal, en la que se muestran las instalaciones a reservar
+app.get("/", function(req, res) {
+  res.status(200);
+  res.render("index");
+});
+
 //Ruta inicio de sesión
 app.get("/login", function(req, res) {
   res.status(200);
@@ -142,12 +148,6 @@ app.post(
   }
 );
 
-//Ruta página principal, en la que se muestran las instalaciones a reservar
-app.get("/", function(req, res) {
-  res.status(200);
-  res.render("index");
-});
-
 //Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
 app.get("/instalacion/:id", function(req, res) {
   const id = req.params.id;
@@ -178,6 +178,7 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   // Código 500: Internal server error
   res.status(error.status || 500);
+  console.log(error);
   res.render("error", {
     status : error.status,
     mensaje: error.message,

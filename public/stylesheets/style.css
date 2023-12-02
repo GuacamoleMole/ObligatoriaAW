@@ -175,3 +175,24 @@ Estilos del footer
       display: none;
   }
 }
+
+/*
+Estilos pagina de errores
+*/
+
+.contenedorMsgError {
+  background-color:rgba(211, 211, 211, 0.402);
+  border-radius: 2rem;
+  margin-top: 5rem;
+  padding: 2rem;
+}
+
+.volverHome {
+  text-decoration: none;
+  color: white;
+  background-color: #7e10a39e;
+  border-radius: 1rem;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
