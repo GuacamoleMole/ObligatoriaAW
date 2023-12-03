@@ -42,7 +42,7 @@ app.get("/", function(req, res) {
   let datos = {};
   if(req.session.user !== undefined){
     console.log("Sesion Abierta")
-    datos.session = request.session.user.correo;
+    datos.session = req.session.user.correo;
   }
 
   res.render("index", {datos});

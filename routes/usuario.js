@@ -5,7 +5,8 @@ const daoUsuario = new DAOUsuario();
 const multer = require("multer");
 const { body, check, validationResult } = require("express-validator");
 const { type } = require("os");
-const multerFactory = multer({storage: multer.memoryStorage()});
+const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
+const upload = multer({ storage: storage });
 const router = Router();
 
 
@@ -22,17 +23,16 @@ router.post(
   // checkeamos que el email sea un email
   check("email", "El email no es válido").isEmail(),
   function(req, res) {
-    const errors = validationResult(req);
+    let errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("login", { errores: errors.array() });
     }
-    // Si no hay errores, continuamos
-    const { correo, contrasena } = req.body
-    daoUsuario.buscarPorEmail(correo, (err, usr) => {
+    //Si no hay errores, continuamos
+    const { email, contrasena } = req.body;
+    daoUsuario.buscarPorEmail(email, (err, usr) => {
       if (err) {
         next(err);
       } else {  
-        console.log(usr);
         if(usr === undefined)
           errors.errors.push({
             msg: 'Email no existe',
@@ -46,7 +46,7 @@ router.post(
               next(err);
           } 
           if (valid) {
-              req.session.user = { correo, id: usr.id };
+              req.session.user = { email: email, id: usr.id, nombre: usr.nombre };
               res.redirect("/");
           } else {
               res.status(401).end(); // contraseña invalida
@@ -54,7 +54,7 @@ router.post(
         });
       }
     });    
-  }
+   }
 );
 
 //Ruta de registro
@@ -68,7 +68,7 @@ router.post(
   "/registro",
   // Checks de validación
   // checkeamos que los campos obligatorios no estén vacíos (redundante con el front, da mayor seguridad)
-  multerFactory.single('imagenPerfil'),
+  upload.single('imagenPerfil'),
   check("nombre", "El nombre es obligatorio").notEmpty(),
   check("apellidos", "Los apellidos son obligatorios").notEmpty(),
   check("facultad", "La facultad es obligatoria").notEmpty(),
@@ -84,14 +84,11 @@ router.post(
   //checkeamos que sea un email de la UCM
   check("email", "El email debe ser de la UCM").matches(/^[a-zA-Z0-9]+@ucm.es$/),
   (req, res, next) => {
-    const errors = validationResult(req);
+    let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      console.log(errors.array());
-      // Si hay errores, renderizamos la vista de registro de nuevo con los errores
       return res.render("registroUsuario", { errores: errors.array() });
     }
-    // Si no hay errores, continuamos
-    // Recoger los datos del formulario
+    // Si no hay errores, recogemos los datos del formulario
     let datos = {};
     datos.nombre = req.body.nombre;
     datos.apellidos = req.body.apellidos;
@@ -100,32 +97,45 @@ router.post(
     datos.grupo = req.body.grupo;
     datos.email = req.body.email;
     datos.contrasena =  bcrypt.hashSync(req.body.contrasena,11); //encriptar contraseña
-
     if(req.file)
       datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
     datos.rol = 'usuario';
     datos.validado = false; //Siempre hay que ser validador por un Admin
 
-    daoUsuario.insertarUsuario(datos, (err, usr) => {
+    daoUsuario.buscarPorEmail(datos.email, (err, usr) => {
       if (err) {
-        // TODO: informar al usuario de que existe email ya registrado?
         next(err);
       } else {  
-        //res.redirect(`/usuario/${usr}`); usr --> id insertado
-        res.status(200).send("¡Registro exitoso!");
+        if(usr !== undefined){
+          errors.errors.push({
+            msg: 'Email duplicado',
+          });
+        }
+        if (!errors.isEmpty()) {
+          return res.render("registroUsuario", { errores: errors.array() });
+        } else {
+          daoUsuario.insertarUsuario(datos, (err, usr) => {
+            if (err) {
+              next(err);
+            } else {  
+              req.session.user = { email: datos.email, id: usr, nombre: datos.nombre };
+              res.redirect("/");
+            }
+          }); 
+        }
       }
-    }); 
+    });
   }
 );
 
-// // Ruta para mostrar la página de usuario con EJS
-// router.get('/:id', (req, res) => {
-//   // Obtener el parámetro de la URL
-//   const id = req.params.id;
-//   //TODO Como email es UNIQUE, buscar todos los datos en BBDD y pasarlos a la vista
-//   // Renderizar la plantilla EJS y pasar el parámetro
-//   //res.render('usuario', { email });
-//   res.render('cuentaUsuario', { id });
-// });
+// Ruta para mostrar la página de usuario con EJS
+router.get('/:id', (req, res) => {
+  // Obtener el parámetro de la URL
+  const id = req.params.id;
+  //TODO Como email es UNIQUE, buscar todos los datos en BBDD y pasarlos a la vista
+  // Renderizar la plantilla EJS y pasar el parámetro
+  //res.render('usuario', { email });
+  res.render('cuentaUsuario', { id });
+});
 
 module.exports = router;
