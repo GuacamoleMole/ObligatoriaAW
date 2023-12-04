@@ -13,11 +13,66 @@
     </head>
     <body>
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
-        <%- include("header") %> <!-- subplantilla -->
+        <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
-            <h1>Reservar <%= id %></h1>
+            <h1>Reservar <%= datos.id %></h1>
             
+        </div>
+
+        <div class="container contenedor-informacion-detallada">
+            <h1 class="text-center titulo-destino"><%=datos.nombre%></h1>
+            <div class="row info-detallada-destino">
+                <div class="col-lg-6 col-sm-12">
+                    <div id="carruselImagenesDestinos" class="carousel slide">
+                        <div class="carousel-inner imagenes-destino-carrusel">
+                            <div class="carousel-item">
+                                <img src="/images/avatarPredeterminado.jpg" alt="Primera slide" class="imagen-destino-main">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/images/avatarPredeterminado.jpg" alt="Segunda slide" class="imagen-destino-main">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carruselImagenesDestinos" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carruselImagenesDestinos" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Siguiente</span>
+                        </button>
+                      </div>
+                </div>
+                <!-- Bucle que permite añadir tantos encabezados y descripciones como sea necesario -->
+                <div class="col-lg-6 col-sm-12 align-items-center texto-detallado-destino"> 
+                    <h4>Título de ejemplo</h4>
+                    <p>Descripción de ejemplo</p>
+                    <h4>Título de ejemplo</h4>
+                    <p>Descripción de ejemplo</p>
+                    <h4>Título de ejemplo</h4>
+                    <p>Descripción de ejemplo</p>
+                    <h4>Título de ejemplo</h4>
+                    <p>Descripción de ejemplo</p>
+                </div>
+            </div>
+            <!-- Formulario de reserva -->
+            <button class="btn btn-primary">Reservar</button>
+    
+            <div class="container contenedor-comentarios">
+                <h2 class="text-center">Comentarios sobre el destino</h2>
+                <button class="botonVerComentarios btn btn-primary">Ver comentarios</button>
+                <button class="botonVerComentarios btn btn-primary" id="botonRecargarComentarios">Recargar comentarios</button>
+    
+                <!-- En este div se meteran los comentarios de a BD -->
+                <div id="comentarios">
+                </div>
+                <% if (datos.session !== undefined) {  %>
+                    <textarea id="comentario" class="form-control celda-form-reserva" name="comentario" placeholder="Escribe tu comentario" rows="5"></textarea>
+                    <button id="botonAddComentario" class="btn btn-primary">Añadir comentario</button>
+                    <div id="mensajeComentarioAdded" class="alert alert-success" role="alert">Comentario añadido con éxito</div>
+                    <div id="mensajeComentarioErrorAdd" class="alert alert-danger" role="alert">El comentario no puede estar vacío</div>
+                <% }; %>
+            </div>
         </div>
 
         <%- include("footer") %>
