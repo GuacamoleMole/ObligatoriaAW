@@ -128,14 +128,46 @@ router.post(
   }
 );
 
+router.delete("/logout", function(req, res, next) {
+  req.session.destroy(function(err){
+    if(!err){
+        res.send("Log Out!")
+        res.redirect("/");
+    }
+    else
+      next(err);
+  })
+});
+
 // Ruta para mostrar la página de usuario con EJS
-router.get('/:id', (req, res) => {
-  // Obtener el parámetro de la URL
+router.get('/:id', (req, res, next) => {
+  let datos = {};
   const id = req.params.id;
-  //TODO Como email es UNIQUE, buscar todos los datos en BBDD y pasarlos a la vista
-  // Renderizar la plantilla EJS y pasar el parámetro
-  //res.render('usuario', { email });
-  res.render('cuentaUsuario', { id });
+  datos.id = id; // Obtener el parámetro de la URL
+
+  daoUsuario.buscarPorID(id, (err, user) => {
+    if (err) {
+      next(err);
+    } else {
+      if (user === undefined) { //si no se encuentra el usuario, pasamos al middleware de ruta no encontrada
+        next();
+      } else {
+        datos.nombre = user.nombre;
+        datos.apellidos = user.apellidos;
+        datos.email = user.email;
+        datos.facultad = user.facultad;
+        datos.curso = user.curso;
+        datos.grupo = user.grupo;
+        //TODO: falta cargar la foto
+
+        if(req.session.user !== undefined){
+          datos.session = req.session.user;
+        }
+      
+        res.render('cuentaUsuario', { datos });
+      }
+    }
+  });
 });
 
 module.exports = router;

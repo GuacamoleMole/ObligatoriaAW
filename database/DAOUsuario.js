@@ -54,6 +54,29 @@ class DAOUsuario {
         });
     }
 
+    buscarPorID (id,callback){
+        this.pool.getConnection((err, connection) => {
+            if (err) {
+                callback(err)
+            } else {
+                connection.query(
+                    usuQueries.buscarPorID,
+                    [id],
+                    function(err, rows){
+                        connection.release();
+                        if(err){
+                            callback(err,null);
+                        }
+                        else{
+                            let data = JSON.parse(JSON.stringify(rows));
+                            callback(null, data[0]); //devolvemos el usuario encontrado
+                        }
+                    }
+                )
+            }
+        });
+    }
+
     terminarConexion(callback) {
         this.pool.end();
     }

@@ -45,7 +45,7 @@ html {
 li.nav-item a.nav-link{
   color: white;
   transition: all .2s ease-in-out;
-  font-weight: 500;
+  font-weight: 700;
 } 
 
 li.nav-item a.nav-link:hover {
@@ -211,4 +211,29 @@ Estilos pagina de errores
   padding: 1rem;
   font-weight: 700;
   font-size: 1.5rem;
+}
+
+/*
+Estilos de la página de logout
+*/
+
+.contenedorLogout {
+  margin: 2rem;
+}
+
+.linkLogout {
+  margin: 2rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-weight: 700;
+}
+
+#cancelLogout {
+  border: 2px solid lime;
+  color: lime;
+}
+
+#logout {
+  border: 2px solid red;
+  color: red;
 }

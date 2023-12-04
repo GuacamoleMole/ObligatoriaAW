@@ -13,37 +13,37 @@
     </head>
     <body>
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
-        <%- include("header") %> <!-- subplantilla -->
+        <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
-            <h1 class="tituloCuentaUsuario">Datos de la cuenta de <span class="tituloNombreUsuario"><%= id %></span></h1>
+            <h1 class="tituloCuentaUsuario">Datos de la cuenta de <span class="tituloNombreUsuario"><%= datos.id %></span></h1>
             <div class="datosUsuario">
                 <img src="/images/avatarPredeterminado.jpg" alt="Imagen de portada instalaciones" class="avatarUsuario">
                 <div class="datosTexto">
                     <div class="row">
                         <div class="col-md-6">
-                            <p><span class="campoUsuario">Nombre: </span> <span class="infoUsuario">Manuel</span></p>
+                            <p><span class="campoUsuario">Nombre: </span> <span class="infoUsuario"><%= datos.nombre %></span></p>
                         </div>
                         <div class="col-md-6">
-                            <p><span class="campoUsuario">Apellidos: </span><span class="infoUsuario">Sánchez Martínez</span></p>
+                            <p><span class="campoUsuario">Apellidos: </span><span class="infoUsuario"><%= datos.apellidos %></span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <p><span class="campoUsuario">Facultad: </span><span class="infoUsuario">Facultad de Enfermería, Fisioterapia y Podología</span></p>
+                            <p><span class="campoUsuario">Facultad: </span><span class="infoUsuario">Facultad de <%= datos.facultad %></span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><span class="campoUsuario">Curso: </span><span class="infoUsuario">1º</span></p>
+                            <p><span class="campoUsuario">Curso: </span><span class="infoUsuario"><%= datos.curso %>º</span></p>
                         </div>
                         <div class="col-md-6">
-                            <p><span class="campoUsuario">Grupo: </span><span class="infoUsuario">B</span></p>
+                            <p><span class="campoUsuario">Grupo: </span><span class="infoUsuario"><%= datos.grupo %></span></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <p><span class="campoUsuario">Correo Electrónico: </span><span class="infoUsuario">msanm@ucm.es</span></p>
+                            <p><span class="campoUsuario">Correo Electrónico: </span><span class="infoUsuario"><%= datos.email %></span></p>
                         </div>
                     </div>
                 </div>
