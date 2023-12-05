@@ -131,6 +131,44 @@ Estilos de la página main
   overflow: scroll;
 }
 
+/*
+Estilos de la página de instalacion
+*/
+
+.titulo-instalacion {
+  margin-top: 2rem;
+}
+
+.imagen-instalacion-main {
+  height: 100%;
+  object-fit: cover;
+  max-height: 480px;
+}
+
+.imagenes-instalacion-carrusel {
+  border-radius: 2rem 0;
+}
+
+.info-detallada-instalacion {
+  margin: 2rem;
+}
+
+@media screen and (max-width: 992px) {
+  .texto-detallado-instalacion {
+      padding-top: 2rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .texto-detallado-instalacion {
+      max-height: 30rem;
+      overflow: auto;
+  }
+}
+.botonReserva {
+  margin: 2rem 0 2rem 0;
+}
+
 /* 
 Estilos del footer
 */
