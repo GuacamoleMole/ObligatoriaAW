@@ -12,10 +12,10 @@
               </li>
               <% if (ses !== undefined) {  %>
                 <li class="nav-item">
-                  <a class="nav-link" href="/">Mensajes</a>
+                  <a class="nav-link" href="/mensajes/<%= datos.session.id %>">Mensajes</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/usuario/<%=datos.session.id%>">Mi perfil</a>
+                  <a class="nav-link" href="/usuario/<%= datos.session.id %>">Mi perfil</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/html/logout.html">Cerrar sesión</a>
