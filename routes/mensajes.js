@@ -9,22 +9,27 @@ router.get("/:id", function(req, res, next) {
   const id = req.params.id;
   datos.id = id;
 
-  daoMensajes.mensajesRecibidos(id, (err, mensajes) => {
-    if (err) {
-        next(err);
-    } else {
-        if (mensajes === undefined) {
-            next();
-        } else {
-            datos.mensajes = mensajes;
-        }
-        if(req.session.user !== undefined){
-            datos.session = req.session.user;
-        }
-        res.status(200);
-        res.render("mensajes", {datos});
-    }
-  });
+//   daoMensajes.mensajesRecibidos(id, (err, mensajes) => {
+//     if (err) {
+//         next(err);
+//     } else {
+//         if (mensajes === undefined) {
+//             next();
+//         } else {
+//             datos.mensajes = mensajes;
+//         }
+//         if(req.session.user !== undefined){
+//             datos.session = req.session.user;
+//         }
+//         res.status(200);
+//         res.render("mensajes", {datos});
+//     }
+//   });
+if(req.session.user !== undefined){
+    datos.session = req.session.user;
+}
+res.status(200);
+res.render("mensajes", {datos});
 });
 
 

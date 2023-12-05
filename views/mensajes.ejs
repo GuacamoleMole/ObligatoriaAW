@@ -17,7 +17,7 @@
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
             <h1>Mensajes <%= datos.id %></h1>
-            <button class="btn btn-primary"><span id="cruzNuevoMensaje">+</span> Nuevo mensaje</button>
+            <button class="btn btn-primary" id="botonNuevoMensaje"><span id="cruzNuevoMensaje">+</span> Nuevo mensaje</button>
 
             <div class="mensajeContainer">
                 <div class="row headerMensaje">
@@ -43,6 +43,24 @@
                 <div class="row contenidoMensaje">
                     <p>Esto es otro mensaje de prueba. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius inventore eligendi sed adipisci corrupti iure maiores ipsum laborum magnam ullam! Recusandae nulla odit, ipsum unde tempore consequatur dicta possimus illum.</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación de la reserva -->
+        <div class="modal fade" id="modalNuevoMensaje" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¡Éxito!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tu reserva para Hawai ha sido realizada con éxito. ¡Nos vemos pronto!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
             </div>
         </div>
 

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log("Hoola");
     $("#logout").click(function (event) {
         event.preventDefault();
 
