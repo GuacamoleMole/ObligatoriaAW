@@ -17,7 +17,33 @@
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
             <h1>Mensajes <%= datos.id %></h1>
-            
+            <button class="btn btn-primary"><span id="cruzNuevoMensaje">+</span> Nuevo mensaje</button>
+
+            <div class="mensajeContainer">
+                <div class="row headerMensaje">
+                    <span>Alberto Ramos Suárez</span>
+                    <p class="emailMensaje">albram06@ucm.es</p>
+                </div>
+                <div class="row asuntoMensaje">
+                    <p>Esto es un asunto de ejemplo</p>
+                </div>
+                <div class=" row contenidoMensaje">
+                    <p>Esto es un mensaje de prueba. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius inventore eligendi sed adipisci corrupti iure maiores ipsum laborum magnam ullam! Recusandae nulla odit, ipsum unde tempore consequatur dicta possimus illum.</p>
+                </div>
+            </div>
+
+            <div class="mensajeContainer">
+                <div class="row headerMensaje">
+                    <span>Samuel Parra Calderón</span>
+                    <p class="emailMensaje">sparrac@ucm.es</p>
+                </div>
+                <div class="row asuntoMensaje">
+                    <p>Esto es un asunto de ejemplo</p>
+                </div>
+                <div class="row contenidoMensaje">
+                    <p>Esto es otro mensaje de prueba. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius inventore eligendi sed adipisci corrupti iure maiores ipsum laborum magnam ullam! Recusandae nulla odit, ipsum unde tempore consequatur dicta possimus illum.</p>
+                </div>
+            </div>
         </div>
 
         <%- include("footer") %>
