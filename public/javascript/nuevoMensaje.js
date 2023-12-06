@@ -3,7 +3,6 @@ $(document).ready(function () {
     const modalNuevoMensaje = $("#modalNuevoMensaje");
 
     botonNuevoMensaje.on('click', () => {
-        let modal = new bootstrap.Modal(modalNuevoMensaje);
-        modal.show();
+        modalNuevoMensaje.modal("show");
     });
 });

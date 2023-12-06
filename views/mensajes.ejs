@@ -17,7 +17,7 @@
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
             <h1>Mensajes <%= datos.id %></h1>
-            <button class="btn btn-primary" id="botonNuevoMensaje"><span id="cruzNuevoMensaje">+</span> Nuevo mensaje</button>
+            <button class="btn btn-primary" id="botonNuevoMensaje" data-bs-toggle="modal" data-bs-target="#modalNuevoMensaje" ><span id="cruzNuevoMensaje">+</span> Nuevo mensaje</button>
 
             <div class="mensajeContainer">
                 <div class="row headerMensaje">
@@ -47,19 +47,32 @@
         </div>
 
         <!-- Modal de confirmación de la reserva -->
-        <div class="modal fade" id="modalNuevoMensaje" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <div class="modal fade" id="modalNuevoMensaje" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalNuevoMensaje" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">¡Éxito!</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Tu reserva para Hawai ha sido realizada con éxito. ¡Nos vemos pronto!
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+                    <form>
+                      <div class="form-group">
+                        <label for="nombreDestinatario" class="col-form-label">Destinatario:</label>
+                        <input type="text" class="form-control" id="nombreDestinatario">
+                      </div>
+                      <div class="form-group">
+                        <label for="asunto" class="col-form-label">Asunto:</label>
+                        <input type="text" class="form-control" id="asunto">
+                      </div>
+                      <div class="form-group">
+                        <label for="mensaje" class="col-form-label">Mensaje:</label>
+                        <textarea class="form-control" rows="5" id="mensaje"></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Enviar mensaje</button>
+                  </div>
             </div>
             </div>
         </div>
