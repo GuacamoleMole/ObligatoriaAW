@@ -8,6 +8,8 @@ module.exports = {
 
   buscarPorID: 'SELECT * FROM UCM_AW_RIU_USU_Usuarios WHERE id = ?',
 
+  buscarNoValidados: 'SELECT * FROM UCM_AW_RIU_USU_Usuarios WHERE validado = 0',
+
   validarUsuario: 'UPDATE UCM_AW_RIU_USU_Usuarios SET validado = 1 WHERE email = ?',
 
   hacerAdmin: 'UPDATE UCM_AW_RIU_USU_Usuarios SET rol = "Admin" WHERE email = ?'

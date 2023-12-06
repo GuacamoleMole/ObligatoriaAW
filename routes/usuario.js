@@ -49,7 +49,10 @@ router.post(
               req.session.user = { email: email, id: usr.id, nombre: usr.nombre };
               res.redirect("/");
           } else {
-              res.status(401).end(); // contraseña invalida
+            errors.errors.push({
+              msg: 'Contraseña incorrecta',
+            });
+            return res.render("login", { errores: errors.array() });
           }
         });
       }
@@ -58,7 +61,7 @@ router.post(
 );
 
 //Ruta de registro
-router.get("/registro", function(req, res, next) {
+router.get("/registro", function(req, res) {
   res.status(200);
   res.render("registroUsuario", { errores: {} });
 });
@@ -145,27 +148,41 @@ router.get('/:id', (req, res, next) => {
   const id = req.params.id;
   datos.id = id; // Obtener el parámetro de la URL
 
-  daoUsuario.buscarPorID(id, (err, user) => {
+  daoUsuario.buscarPorID(id, (err, usuario) => {
     if (err) {
       next(err);
     } else {
-      if (user === undefined) { //si no se encuentra el usuario, pasamos al middleware de ruta no encontrada
+      if (usuario === undefined) { //si no se encuentra el usuario, pasamos al middleware de ruta no encontrada
         next();
       } else {
-        datos.nombre = user.nombre;
-        datos.apellidos = user.apellidos;
-        datos.email = user.email;
-        datos.facultad = user.facultad;
-        datos.curso = user.curso;
-        datos.grupo = user.grupo;
+        datos.nombre = usuario.nombre;
+        datos.apellidos = usuario.apellidos;
+        datos.email = usuario.email;
+        datos.facultad = usuario.facultad;
+        datos.curso = usuario.curso;
+        datos.grupo = usuario.grupo;
+        datos.rol = usuario.rol;
+        datos.validado = usuario.validado;
         //TODO: falta cargar la foto
 
         if(req.session.user !== undefined){
           datos.session = req.session.user;
         }
-      
-        res.render('cuentaUsuario', { datos });
+        console.log(datos);
+        res.render('cuentaUsuario', { datos: datos });
       }
+    }
+  });
+});
+
+router.get('/admin/pendientes', (req,res,next) => {
+  res.status(200);
+  daoUsuario.buscarNoValidados((err, usuarios) =>{
+    if(err)
+      next(err);
+    else{
+      console.log(usuarios);
+      res.render("pendientes" , { usuarios: {usuarios} });
     }
   });
 });
