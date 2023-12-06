@@ -42,7 +42,6 @@ app.get("/", function(req, res) {
 
   let datos = {};
   if(req.session.user !== undefined){
-    console.log("Sesion Abierta")
     datos.session = req.session.user;
   }
   res.render("index", {datos});

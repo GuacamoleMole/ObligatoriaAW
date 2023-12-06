@@ -176,13 +176,17 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('/admin/pendientes', (req,res,next) => {
-  res.status(200);
+  let datos = {};
   daoUsuario.buscarNoValidados((err, usuarios) =>{
     if(err)
       next(err);
     else{
-      console.log(usuarios);
-      res.render("pendientes" , { usuarios: {usuarios} });
+      datos.usuarios = usuarios;
+      if(req.session.user !== undefined){
+        datos.session = req.session.user;
+      }
+      console.log(datos);
+      res.render("pendientes" , { datos: datos });
     }
   });
 });
