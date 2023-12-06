@@ -62,6 +62,23 @@ class DAOUsuario {
       }
     });
   }
+  buscarRolUsuario(callback){
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(usuQueries.buscarRolUsuario, function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data); //devolvemos todos los roles usuarios
+          }
+        });
+      }
+    });
+  }
 
   buscarPorID(id, callback) {
     this.pool.getConnection((err, connection) => {
@@ -98,6 +115,7 @@ class DAOUsuario {
       }
     });
   }
+
   validarUsuario(id, callback){
     this.pool.getConnection((err, connection) => {
       if(err)
@@ -115,6 +133,22 @@ class DAOUsuario {
     });
   }
 
+  hacerAdmin(id, callback){
+    this.pool.getConnection((err, connection) => {
+      if(err)
+        callback(err);
+      else{
+        connection.query(usuQueries.hacerAdmin, [id], function(err, rows){
+          connection.release();
+          //Como solo se modifica una fila, no devolvemos nada en rows
+          if(err)
+            callback(err)
+          else
+            callback(null);
+        });
+      }
+    });
+  }
   terminarConexion(callback) {
     this.pool.end();
   }

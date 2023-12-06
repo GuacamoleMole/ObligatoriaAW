@@ -187,7 +187,6 @@ router.get('/admin/pendientes', (req,res,next) => {
       if(req.session.user !== undefined){
         datos.session = req.session.user;
       }
-      console.log(datos);
       res.render("pendientes" , { datos: datos });
     }
   });
@@ -200,6 +199,34 @@ router.put("/admin/validar/:id", (req,res,next) => {
       next(err);
     else{
       res.send(`ID:${id} validado`);
+    }
+  });
+});
+
+router.get('/admin/hacerAdmin', (req,res,next) =>{
+  let datos = {};
+  //Ademas de ser usuario, tiene que estar validado
+  //Esto lo comprueba ya la query de la BBDD
+  daoUsuario.buscarRolUsuario((err,usuarios) =>{
+    if(err)
+      next(err);
+    else{
+      datos.usuarios = usuarios;
+      if(req.session.user !== undefined){
+        datos.session = req.session.user;
+      }
+      res.render("hacerAdmin" , { datos: datos });
+    }
+  })
+});
+
+router.put("/admin/hacerAdmin/:id", (req,res,next) =>{
+  const id = req.params.id;
+  daoUsuario.hacerAdmin(id, (err) =>{
+    if(err)
+      next(err);
+    else{
+      res.send(`ID:${id} ahora es Admin`);
     }
   });
 });
