@@ -1,3 +1,5 @@
+"use strict";
+
 const {Router} = require('express');
 const bcrypt = require('bcrypt');
 const DAOUsuario = require('../database/DAOUsuario')
@@ -187,6 +189,17 @@ router.get('/admin/pendientes', (req,res,next) => {
       }
       console.log(datos);
       res.render("pendientes" , { datos: datos });
+    }
+  });
+});
+
+router.put("/admin/validar/:id", (req,res,next) => {
+  const id = req.params.id;
+  daoUsuario.validarUsuario(id, (err) =>{
+    if(err)
+      next(err);
+    else{
+      res.send(`ID:${id} validado`);
     }
   });
 });

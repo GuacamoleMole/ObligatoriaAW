@@ -11,6 +11,12 @@
     </head>
     <body>
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
+
+        <!-- TODO: Ponerle estilos -->
+        <% if(datos.usuarios.length === 0) {%>
+            <p class="fs-1"> No hay usuarios sin validar</p>
+        <% }; %>
+
         <div class="container mt-5">
             <% datos.usuarios.forEach(usuario => { %>
             <div class="mensajeContainer">
@@ -18,12 +24,13 @@
                     <span> <%= usuario.nombre + " " %> <%= usuario.apellidos %> </span>
                     <p class="emailMensaje"> <%= usuario.email %> </p>
                       <!-- Botón para validar -->
-                      <button class="btn btn-primary" onclick="validarUsuario('<%= usuario.email %>')">Validar</button>
+                      <button class="btn btn-primary btn-validar" data-userID="<%= usuario.id %>">Validar</button>
                 </div>
             </div>
             <% }); %>
         </div>
         <%- include("footer") %>
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="/javascript/admin.js"></script>
     </body>
 </html>

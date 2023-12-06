@@ -98,7 +98,23 @@ class DAOUsuario {
       }
     });
   }
-  
+  validarUsuario(id, callback){
+    this.pool.getConnection((err, connection) => {
+      if(err)
+        callback(err);
+      else{
+        connection.query(usuQueries.validarUsuario, [id], function(err, rows){
+          connection.release();
+          //Como solo se modifica una fila, no devolvemos nada en rows
+          if(err)
+            callback(err)
+          else
+            callback(null);
+        });
+      }
+    });
+  }
+
   terminarConexion(callback) {
     this.pool.end();
   }
