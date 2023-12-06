@@ -22,7 +22,8 @@
                 <div class="row headerMensaje">
                     <span> <%= usuario.nombre + " " %> <%= usuario.apellidos %> </span>
                     <p class="emailMensaje"> <%= usuario.email %> </p>
-                      <button class="btn btn-primary btn-hacerAdmin" data-userID="<%= usuario.id %>">Hacer Admin</button>
+                    <!-- TODO: intentar modal de confirmación -->
+                    <button class="btn btn-primary btn-hacerAdmin" data-userID="<%= usuario.id %>">Hacer Admin</button>
                 </div>
             </div>
             <% }); %>
