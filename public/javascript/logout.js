@@ -3,7 +3,7 @@ $(document).ready(function () {
         event.preventDefault();
 
         $.ajax({
-            url: "/logout", // Reemplaza con la URL correcta para la acción de logout en tu servidor
+            url: "/usuario/logout", // Reemplaza con la URL correcta para la acción de logout en tu servidor
             type: "DELETE",
             success: function (data) {
                 console.log("Logout exitoso");
