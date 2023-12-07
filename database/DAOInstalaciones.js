@@ -16,7 +16,7 @@ class DAOInstalaciones {
       } else {
         connection.query(
           insQueries.insertarInstalación,
-          [inst.nombre, inst.aforo, inst.tipo, inst.imagen, inst.disp],
+          [inst.nombre, inst.aforo, inst.tipo, inst.imagen, inst.horaInicio, inst.horaFin],
           function (err, rows) {
             connection.release();
             if (err) {

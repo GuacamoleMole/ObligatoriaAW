@@ -231,4 +231,9 @@ router.put("/admin/hacerAdmin/:id", (req,res,next) =>{
   });
 });
 
+router.get("/admin/crearInstalacion", (req,res,next) =>{
+  res.status(200);
+  res.render("crearInstalacion", { errores: {} });
+});
+
 module.exports = router;

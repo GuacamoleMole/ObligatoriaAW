@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Crear Instalación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <% if (errores.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                La información introducida no es correcta:
+                <ul>
+                    <% errores.forEach(function(error) { %>
+                        <li><%= error.msg %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <div class="container mt-5">
+        <h2 class="mb-4">Crear nueva instalación</h2>
+        <form method="POST" action="/instalacion/crear" enctype="multipart/form-data" >
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Campo Nombre -->
+                    <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    <span id="errorNombre" class="campoIncorrecto"></span> 
+                    </div>
+
+                    <!-- Campo Tipo Reserva -->
+                    <div class="mb-3">
+                    <label for="tipoReserva" class="form-label">Tipo Reserva:</label>
+                    <select class="form-select" id="facultad" name="tipoReserva" required>
+                        <option selected disabled value="">Selecciona un tipo</option>
+                        <option value="individual">Individual</option>
+                        <option value="colectiva">Colectiva</option>
+                    </select>
+                    </div>
+
+                    <!-- TODO: comprobrar que Inicio < Fin -->
+                    <!-- Campo Hora de Inicio -->
+                    <div class="mb-3">
+                        <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                        <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                    </div>
+
+                    <!-- Campo Hora de Fin -->
+                    <div class="mb-3">
+                        <label for="horaFin" class="form-label">Hora de Fin:</label>
+                        <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                    </div>
+
+                    <!-- Campo Aforo -->
+                    <div class="mb-3">
+                        <label for="aforo" class="form-label">Aforo:</label>
+                        <input type="number" class="form-control" id="aforo" name="aforo" min="1" required>
+                        <small id="aforoHelp" class="form-text text-muted">Este campo admite solo números mayores que 0.</small>
+                    </div>
+
+                     <!-- Campo Imagen -->
+                     <div class="mb-3">
+                        <label for="imagenPerfil" class="form-label">Imagen de Perfil:</label>
+                        <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil" required>
+                    </div>
+
+                    <!-- Botón de Registro -->
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="/javascript/validacionJQuery.js"></script>
+    </body>
+</html>
