@@ -9,20 +9,18 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="javascript/validacionJQuery.js"></script>
+        <script src="/javascript/validacionJQuery.js"></script>
     </head>
     <body>
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
-        <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
-            <h1>Reservar <%= datos.id %></h1>
-            
+            <h1 class="text-center titulo-instalacion"><%=datos.nombre%></h1>
         </div>
 
         <div class="container contenedor-informacion-instalacion">
-            <h1 class="text-center titulo-instalacion"><%=datos.nombre%></h1>
             <div class="row info-detallada-instalacion">
+                <!-- TODO:Carrusel no parece viable, hacerlo si hay tiempo-->
                 <div class="col-lg-6 col-sm-12">
                     <div id="carruselImagenesInstalaciones" class="carousel slide">
                         <div class="carousel-inner imagenes-instalacion-carrusel">
@@ -41,23 +39,16 @@
                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
                           <span class="visually-hidden">Siguiente</span>
                         </button>
-                      </div>
+                    </div>
                 </div>
                 <!-- Bucle que permite añadir tantos encabezados y descripciones como sea necesario -->
                 <div class="col-lg-6 col-sm-12 align-items-center texto-detallado-instalacion"> 
                     <h4>Descripción</h4>
-                    <p>Descripción de ejemplo, Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus possimus, ut quasi tempore totam aliquid in voluptatibus, similique molestias fuga quos laudantium labore dolorum fugiat sapiente? Excepturi fugiat laborum ut.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor iure enim quas est ad, nesciunt quo ipsum debitis delectus velit cupiditate totam iusto amet necessitatibus vero inventore rerum asperiores modi.</p>
-                    <h4>Disponibilidad horaria</h4>
-                    <p>
-                        Lunes a viernes: 9:00-17:00<br>
-                        Sábados: 10:00-15:00<br>
-                        Domingos: 9:00-14:00
-                    </p>
-                    <h4>Tipo de reserva</h4>
-                    <p>Individual</p>
-                    <h4>Aforo</h4>
-                    <p>35</p>
+                    <p> <%=datos.descripcion%></p>
+                    <h4>Hora Inicio: <%=datos.hora_inicio%></h4>
+                    <h4>Hora Fin: <%=datos.hora_fin%></h4>
+                    <h4>Tipo de reserva: <%=datos.tipoReserva%></h4>
+                    <h4>Aforo: <%=datos.aforo%></h4>
                 </div>
             </div>
             <!-- Formulario de reserva -->

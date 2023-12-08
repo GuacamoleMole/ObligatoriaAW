@@ -11,18 +11,20 @@ const upload = multer({ storage: storage });
 
 
 //Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
-router.get("/:id", function(req, res) {
-  datos = {};
+router.get("/:id", function(req, res, next) {
   const id = req.params.id;
-  datos.id = id;
   
-  if(req.session.user !== undefined){
-    datos.session = req.session.user;
-  }
-  
-  res.status(200);
-  // TODO: buscar el id y pasar el nombre e información de la instalación
-  res.render("instalacion", {id});
+  daoInstalaciones.buscarPorId(id, (err,inst) =>{
+    if(err){
+      next(err);
+    } else{
+      if(req.session.user !== undefined){
+        inst.session = req.session.user;
+      }
+      console.log(inst);
+      res.render("instalacion", {datos: inst});
+    }
+  });  
 });
 
 //TODO: mas checks
@@ -42,9 +44,9 @@ router.post(
     datos.horaInicio = req.body.horaInicio;
     datos.horaFin = req.body.horaFin;
     datos.aforo = req.body.aforo;
+    datos.descripcion = req.body.descripcion;
     if(req.file)
       datos.imagen = req.file.buffer; //Buffer del multer para guardar la imagen 
-    console.log(datos);
     daoInstalaciones.buscarPorNombre(datos.nombre, (err, inst) =>{
       if(err){
         next(err);

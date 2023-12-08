@@ -16,7 +16,7 @@ class DAOInstalaciones {
       } else {
         connection.query(
           insQueries.insertarInstalación,
-          [inst.nombre, inst.aforo, inst.tipo, inst.imagen, inst.horaInicio, inst.horaFin],
+          [inst.nombre, inst.aforo, inst.tipo, inst.imagen, inst.horaInicio, inst.horaFin, inst.descripcion],
           function (err, rows) {
             connection.release();
             if (err) {
@@ -38,6 +38,28 @@ class DAOInstalaciones {
         connection.query(
           insQueries.buscarPorNombre,
           [nombre],
+          function (err, rows) {
+            connection.release();
+            if (err) {
+              callback(err, null);
+            } else {
+              let data = JSON.parse(JSON.stringify(rows));
+              callback(null, data[0]); //devolvemos solo uno, ya que email es UNIQUE
+            }
+          }
+        );
+      }
+    });
+  }
+
+  buscarPorId(id, callback){
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(
+          insQueries.buscarPorId,
+          [id],
           function (err, rows) {
             connection.release();
             if (err) {

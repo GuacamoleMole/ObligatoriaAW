@@ -1,7 +1,8 @@
 "use strict";
 const conf = require("./database/configuration")
-
 const express = require('express');
+const DAOInstalaciones = require('./database/DAOInstalaciones')
+const daoInstalaciones = new DAOInstalaciones();
 const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
@@ -37,14 +38,21 @@ app.use('/mensajes', require('./routes/mensajes'));
 
 
 //Ruta página principal, en la que se muestran las instalaciones a reservar
-app.get("/", function(req, res) {
-  res.status(200);
+app.get("/", function(req, res, next) {
 
-  let datos = {};
-  if(req.session.user !== undefined){
-    datos.session = req.session.user;
-  }
-  res.render("index", {datos});
+  daoInstalaciones.buscarTodasInstalaciones((err, instalaciones) =>{
+    if(err){
+      next(err);
+    } else{
+      let datos = {};
+      if(req.session.user !== undefined){
+        datos.session = req.session.user;
+      }
+      datos.instalaciones = instalaciones;
+      console.log(datos);
+      res.render("index", {datos});
+    }
+  });
 });
 
 
