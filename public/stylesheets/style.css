@@ -153,6 +153,11 @@ Estilos de la página de instalacion
   margin: 2rem;
 }
 
+#formularioReserva {
+  display: none;
+  margin-bottom: 2rem;
+}
+
 @media screen and (max-width: 992px) {
   .texto-detallado-instalacion {
       padding-top: 2rem;

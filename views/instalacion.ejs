@@ -51,10 +51,41 @@
                     <h4>Aforo: <%=datos.aforo%></h4>
                 </div>
             </div>
-            <!-- Formulario de reserva -->
-            <button class="btn btn-primary botonReserva">Reservar</button>
+            <!-- Formulario para ver formulario reserva -->
+            <% if(datos.session !== undefined) {%>
+            <button class="btn btn-primary botonCrearReserva">Reservar</button>
+            <% } else { %>
+            <a href="/usuario/login" class="btn btn-success">Inicie sesión para reservar</a>
+            <% }; %>
         </div>
-
+        <div class="container mt-5" id="formularioReserva">
+            <form method="POST" action="/reserva/crear" enctype="multipart/form-data" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- TODO: comprobrar que Inicio < Fin -->
+                        <!-- Fecha de la reserva -->
+                        <div class="mb-3">
+                            <label for="fecha">Dia</label>
+                            <input id="fecha" class="form-control" type="date" name="fecha" required>
+                        </div>
+                        <!-- Campo Hora de Inicio -->
+                        <div class="mb-3">
+                            <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                            <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                        </div>
+        
+                        <!-- Campo Hora de Fin -->
+                        <div class="mb-3">
+                            <label for="horaFin" class="form-label">Hora de Fin:</label>
+                            <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                        </div>
+                        <!-- Botón de Reservar -->
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <%- include("footer") %>
+        <script src="/javascript/reserva.js"></script>
     </body>
 </html>

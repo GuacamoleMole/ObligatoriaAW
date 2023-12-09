@@ -165,6 +165,10 @@ router.get('/:id', (req, res, next) => {
         datos.grupo = usuario.grupo;
         datos.rol = usuario.rol;
         datos.validado = usuario.validado;
+        if(datos.validado)
+          datos.vali = "SÍ";
+        else
+          datos.vali = "NO";
         //TODO: falta cargar la foto
 
         if(req.session.user !== undefined){
