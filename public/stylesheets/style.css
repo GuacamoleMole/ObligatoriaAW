@@ -115,6 +115,11 @@ Estilos de la página de usuario
   font-weight: 700;
 }
 
+.botonAccionAdmin {
+  width: 150px;
+  height: 80px;
+}
+
 /*
 Estilos de la página main
 */

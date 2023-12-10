@@ -53,15 +53,36 @@
                 </div>
             </div>
             
-        </div>
-        <% if(datos.rol === 'admin' && datos.session !== undefined) { %>
-            <a href="/usuario/admin/pendientes" class="btn btn-success">Usuarios pendientes</a>
-            <a href="/usuario/admin/confSistema" class="btn btn-success">Configuración sistema</a>
-            <a href="/usuario/admin/crearInstalacion" class="btn btn-success">Crear Instalación</a>
-            <a href="/usuario/admin/historial" class="btn btn-success">Historial reservas</a>
-            <a href="/usuario/admin/hacerAdmin" class="btn btn-success">Hacer administrador</a>
+            <% if(datos.rol === 'admin' && datos.session !== undefined) { %>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/pendientes" class="btn btn-primary p-3 botonAccionAdmin">Usuarios pendientes</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/confSistema" class="btn btn-primary p-3 botonAccionAdmin">Configuración sistema</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/crearInstalacion" class="btn btn-primary p-3 botonAccionAdmin">Crear Instalación</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/historial" class="btn btn-primary p-3 botonAccionAdmin">Historial reservas</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/hacerAdmin" class="btn btn-primary p-3 botonAccionAdmin">Hacer administrador</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/listarReservas" class="btn btn-primary pt-4 botonAccionAdmin">Listar reservas</a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                        <a href="/usuario/admin/listarUsuarios" class="btn btn-primary pt-4 botonAccionAdmin">Listar usuarios</a>
+                    </div>
+                </div>
 
-        <% }; %>
+    
+            <% }; %>
+
+        </div>
+
         <%- include("footer") %>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     </body>
