@@ -236,8 +236,14 @@ router.put("/admin/hacerAdmin/:id", (req,res,next) =>{
 });
 
 router.get("/admin/crearInstalacion", (req,res,next) =>{
+  let datos = {};
+
+  if(req.session.user !== undefined){
+    datos.session = req.session.user;
+  }
+
   res.status(200);
-  res.render("crearInstalacion", { errores: {} });
+  res.render("crearInstalacion", { datos: datos, errores: {} });
 });
 
 module.exports = router;

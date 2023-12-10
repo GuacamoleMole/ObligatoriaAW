@@ -33,12 +33,15 @@ router.post(
   upload.single('imagenPerfil'),
   check("nombre", "El nombre es obligatorio").notEmpty(),
   (req,res,next) =>{
+    let datos = {};
+    if(req.session.user !== undefined){
+      datos.session = req.session.user;
+    }
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.render("crearInstalacion", { errores: errors.array() });
+      return res.render("crearInstalacion", { datos: datos, errores: errors.array() });
     }
     // Si no hay errores, recogemos los datos del formulario
-    let datos = {};
     datos.nombre = req.body.nombre;
     datos.tipo = req.body.tipoReserva;
     datos.horaInicio = req.body.horaInicio;
@@ -57,7 +60,7 @@ router.post(
           });
         }
         if (!errors.isEmpty()) {
-          return res.render("crearInstalacion", { errores: errors.array() });
+          return res.render("crearInstalacion", { datos: datos, errores: errors.array() });
         } else {
           daoInstalaciones.insertarInstalación(datos, (err, id) =>{
             if (err) {
