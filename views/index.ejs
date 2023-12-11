@@ -15,10 +15,10 @@
     <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
     <%- include("header", { ses: datos.session }) %> <!-- subplantilla -->
     <div class="container mt-5">
-      <h1>Instalaciones de la complutense</h1>
+      <h1>Instalaciones de UCM</h1>
       <div class="container contenedorInstalaciones">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-          <% datos.instalaciones.forEach( function (inst) {%>
+          <% datos.instalaciones.forEach(function (inst) {%>
           <div class="col tarjetaInstalacion">
             <div class="card">
               <a href="/instalacion/<%= inst.id%>">
@@ -27,6 +27,7 @@
               </a>
               <div class="card-body cuerpoTarjetaInstalacion">
                 <h3 class="card-title"><%= inst.nombre %></h3>
+                <p class="card-text"><%=inst.descripcion%></p>
               </div>
             </div>
           </div>
@@ -34,7 +35,6 @@
          
         </div>
       </div>
-
     </div>
 
     <%- include("footer") %>

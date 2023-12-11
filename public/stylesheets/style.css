@@ -148,9 +148,6 @@ Estilos de la página de instalacion
   height: 100%;
   object-fit: cover;
   max-height: 480px;
-}
-
-.imagenes-instalacion-carrusel {
   border-radius: 2rem 0;
 }
 

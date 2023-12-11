@@ -23,54 +23,38 @@
         <% } %>
 
         <div class="container mt-5">
-            <h1 class="mb-4">Crear nueva instalación</h1>
-            <form method="POST" action="/instalacion/crear" enctype="multipart/form-data" >
+            <h1 class="mb-4">Configuración de la Organización</h1>
+            <form method="POST" action="/configurarSistema" enctype="multipart/form-data" >
                 <div class="row">
+                    <!-- TODO: Cargar los datos de la organización actual y mostrarlos como default -->
+                    <!-- TODO: duda: la llamada es post o put? -->
                     <div class="col-md-12">
                         <!-- Campo Nombre -->
                         <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre:</label>
+                        <label for="nombre" class="form-label">Nombre de la Organización:</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" required>
                         <span id="errorNombre" class="campoIncorrecto"></span> 
                         </div>
-                        <!-- Campo Descripción -->
+                        <!-- Campos Dirección -->
                         <div class="mb-3">
-                            <label for="descripcion" class="form-label">Descripción:</label>
-                            <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                            <label for="direccion" class="form-label">Calle y número:</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                            <span id="errorDireccion" class="campoIncorrecto"></span> 
                         </div>
-                        <!-- Campo Tipo Reserva -->
                         <div class="mb-3">
-                        <label for="tipoReserva" class="form-label">Tipo Reserva:</label>
-                        <select class="form-select" id="facultad" name="tipoReserva" required>
-                            <option selected disabled value="">Selecciona un tipo</option>
-                            <option value="individual">Individual</option>
-                            <option value="colectiva">Colectiva</option>
-                        </select>
+                            <label for="ciudad" class="form-label">Ciudad:</label>
+                            <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+                            <span id="errorCiudad" class="campoIncorrecto"></span> 
                         </div>
-
-                        <!-- TODO: comprobrar que Inicio < Fin -->
-                        <!-- Campo Hora de Inicio -->
                         <div class="mb-3">
-                            <label for="horaInicio" class="form-label">Hora de Inicio:</label>
-                            <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
-                        </div>
-
-                        <!-- Campo Hora de Fin -->
-                        <div class="mb-3">
-                            <label for="horaFin" class="form-label">Hora de Fin:</label>
-                            <input type="time" class="form-control" id="horaFin" name="horaFin" required>
-                        </div>
-
-                        <!-- Campo Aforo -->
-                        <div class="mb-3">
-                            <label for="aforo" class="form-label">Aforo:</label>
-                            <input type="number" class="form-control" id="aforo" name="aforo" min="1" required>
-                            <small id="aforoHelp" class="form-text text-muted">Este campo admite solo números mayores que 0.</small>
+                            <label for="pais" class="form-label">País:</label>
+                            <input type="text" class="form-control" id="pais" name="pais" required>
+                            <span id="errorPais" class="campoIncorrecto"></span> 
                         </div>
 
                         <!-- Campo Imagen -->
                         <div class="mb-3">
-                            <label for="imagenPerfil" class="form-label">Imagen de Perfil:</label>
+                            <label for="imagenPerfil" class="form-label">Imagen de la Organización:</label>
                             <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil" required>
                         </div>
 

@@ -246,4 +246,37 @@ router.get("/admin/crearInstalacion", (req,res,next) =>{
   res.render("crearInstalacion", { datos: datos, errores: {} });
 });
 
+router.get("/admin/configuracionSistema", (req,res,next) =>{
+  let datos = {};
+
+  if(req.session.user !== undefined){
+    datos.session = req.session.user;
+  }
+
+  res.status(200);
+  res.render("configuracionSistema", { datos: datos, errores: {} });
+});
+
+router.get("/admin/historialReservas", (req,res,next) =>{
+  let datos = {};
+
+  if(req.session.user !== undefined){
+    datos.session = req.session.user;
+  }
+
+  res.status(200);
+  res.render("historialReservas", { datos: datos, errores: {} });
+});
+
+router.get("/admin/listarUsuarios", (req,res,next) =>{
+  let datos = {};
+
+  if(req.session.user !== undefined){
+    datos.session = req.session.user;
+  }
+
+  res.status(200);
+  res.render("listarUsuarios", { datos: datos, errores: {} });
+});
+
 module.exports = router;

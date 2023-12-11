@@ -14,76 +14,59 @@
     <body>
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
-        <div class="container mt-5">
+        <div class="container mt-5 mb-5">
             <h1 class="text-center titulo-instalacion"><%=datos.nombre%></h1>
-        </div>
-
-        <div class="container contenedor-informacion-instalacion">
-            <div class="row info-detallada-instalacion">
-                <!-- TODO:Carrusel no parece viable, hacerlo si hay tiempo-->
-                <div class="col-lg-6 col-sm-12">
-                    <div id="carruselImagenesInstalaciones" class="carousel slide">
-                        <div class="carousel-inner imagenes-instalacion-carrusel">
-                            <div class="carousel-item active">
-                                <img src="/images/avatarPredeterminado.jpg" alt="Primera slide" class="imagen-instalacion-main">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="/images/imgCoverRegistro.jpg" alt="Segunda slide" class="imagen-instalacion-main">
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carruselImagenesInstalaciones" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Anterior</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carruselImagenesInstalaciones" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Siguiente</span>
-                        </button>
+            <div class="container contenedor-informacion-instalacion">
+                <div class="row info-detallada-instalacion">
+                    <div class="col-lg-6 col-sm-12 containerImagenInstalacion">
+                        <img src="/images/avatarPredeterminado.jpg" alt="Segunda slide" class="imagen-instalacion-main">
+                    </div>
+                    <!-- Bucle que permite añadir tantos encabezados y descripciones como sea necesario -->
+                    <div class="col-lg-6 col-sm-12 align-items-center texto-detallado-instalacion"> 
+                        <h4>Descripción</h4>
+                        <p> <%=datos.descripcion%></p>
+                        <h4>Horario Disponible</h4>
+                        <p>De <%=datos.hora_inicio.slice(0, -3)%> a <%=datos.hora_fin.slice(0, -3)%></p>
+                        <h4>Tipo de reserva</h4>
+                        <p><%=datos.tipoReserva%></p>
+                        <h4>Aforo</h4>
+                        <p><%=datos.aforo%></p>
                     </div>
                 </div>
-                <!-- Bucle que permite añadir tantos encabezados y descripciones como sea necesario -->
-                <div class="col-lg-6 col-sm-12 align-items-center texto-detallado-instalacion"> 
-                    <h4>Descripción</h4>
-                    <p> <%=datos.descripcion%></p>
-                    <h4>Hora Inicio: <%=datos.hora_inicio%></h4>
-                    <h4>Hora Fin: <%=datos.hora_fin%></h4>
-                    <h4>Tipo de reserva: <%=datos.tipoReserva%></h4>
-                    <h4>Aforo: <%=datos.aforo%></h4>
-                </div>
+                <!-- Formulario para ver formulario reserva -->
+                <% if(datos.session !== undefined) {%>
+                <button class="btn btn-primary botonCrearReserva">Ver Formulario de Reserva</button>
+                <% } else { %>
+                <a href="/usuario/login" class="btn btn-primary">Inicie sesión para reservar</a>
+                <% }; %>
             </div>
-            <!-- Formulario para ver formulario reserva -->
-            <% if(datos.session !== undefined) {%>
-            <button class="btn btn-primary botonCrearReserva">Reservar</button>
-            <% } else { %>
-            <a href="/usuario/login" class="btn btn-success">Inicie sesión para reservar</a>
-            <% }; %>
-        </div>
-        <div class="container mt-5" id="formularioReserva">
-            <form method="POST" action="/reserva/crear" enctype="multipart/form-data" >
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- TODO: comprobrar que Inicio < Fin -->
-                        <!-- Fecha de la reserva -->
-                        <div class="mb-3">
-                            <label for="fecha">Dia</label>
-                            <input id="fecha" class="form-control" type="date" name="fecha" required>
+            <div class="container mt-5" id="formularioReserva">
+                <form method="POST" action="/reserva/crear" enctype="multipart/form-data" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- TODO: comprobrar que Inicio < Fin -->
+                            <!-- Fecha de la reserva -->
+                            <div class="mb-3">
+                                <label for="fecha">Dia</label>
+                                <input id="fecha" class="form-control" type="date" name="fecha" required>
+                            </div>
+                            <!-- Campo Hora de Inicio -->
+                            <div class="mb-3">
+                                <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                                <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                            </div>
+            
+                            <!-- Campo Hora de Fin -->
+                            <div class="mb-3">
+                                <label for="horaFin" class="form-label">Hora de Fin:</label>
+                                <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                            </div>
+                            <!-- Botón de Reservar -->
+                            <button type="submit" class="btn btn-primary">Reservar</button>
                         </div>
-                        <!-- Campo Hora de Inicio -->
-                        <div class="mb-3">
-                            <label for="horaInicio" class="form-label">Hora de Inicio:</label>
-                            <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
-                        </div>
-        
-                        <!-- Campo Hora de Fin -->
-                        <div class="mb-3">
-                            <label for="horaFin" class="form-label">Hora de Fin:</label>
-                            <input type="time" class="form-control" id="horaFin" name="horaFin" required>
-                        </div>
-                        <!-- Botón de Reservar -->
-                        <button type="submit" class="btn btn-primary">Reservar</button>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
         <%- include("footer") %>
         <script src="/javascript/reserva.js"></script>

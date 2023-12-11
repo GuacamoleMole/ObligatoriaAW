@@ -11,12 +11,12 @@
     <body>
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
 
-        <!-- TODO: Ponerle estilos -->
-        <% if(datos.usuarios.length === 0) {%>
-            <p class="fs-1"> No hay posibles usuarios para hacer admin</p>
-        <% }; %>
-
         <div class="container mt-5">
+            <h1>Hacer administrador</h1>
+
+            <% if(datos.usuarios.length === 0) {%>
+                <h2> No hay posibles usuarios para hacer admin</h2>
+            <% }; %>
             <% datos.usuarios.forEach(usuario => { %>
             <div class="mensajeContainer">
                 <div class="row headerMensaje">
