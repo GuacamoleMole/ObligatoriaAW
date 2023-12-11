@@ -15,60 +15,72 @@
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
         <div class="container mt-5 mb-5">
-            <h1 class="text-center titulo-instalacion"><%=datos.nombre%></h1>
+            <h1 class="text-center titulo-instalacion"><%=datos.inst.nombre%></h1>
             <div class="container contenedor-informacion-instalacion">
                 <div class="row info-detallada-instalacion">
                     <div class="col-lg-6 col-sm-12 containerImagenInstalacion">
-                        <img src="/images/avatarPredeterminado.jpg" alt="Segunda slide" class="imagen-instalacion-main">
+                        <img src="/images/avatarPredeterminado.jpg" alt="Imagen de la instalación" class="imagen-instalacion-main">
                     </div>
-                    <!-- Bucle que permite añadir tantos encabezados y descripciones como sea necesario -->
                     <div class="col-lg-6 col-sm-12 align-items-center texto-detallado-instalacion"> 
                         <h4>Descripción</h4>
-                        <p> <%=datos.descripcion%></p>
+                        <p> <%=datos.inst.descripcion%></p>
                         <h4>Horario Disponible</h4>
-                        <p>De <%=datos.hora_inicio.slice(0, -3)%> a <%=datos.hora_fin.slice(0, -3)%></p>
+                        <p>De <%=datos.inst.hora_inicio.slice(0, -3)%> a <%=datos.inst.hora_fin.slice(0, -3)%></p>
                         <h4>Tipo de reserva</h4>
-                        <p><%=datos.tipoReserva%></p>
+                        <p><%=datos.inst.tipoReserva%></p>
                         <h4>Aforo</h4>
-                        <p><%=datos.aforo%></p>
+                        <p><%=datos.inst.aforo%></p>
                     </div>
                 </div>
                 <!-- Formulario para ver formulario reserva -->
                 <% if(datos.session !== undefined) {%>
-                <button class="btn btn-primary botonCrearReserva">Ver Formulario de Reserva</button>
+                    <% if (errores.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            La información introducida no es correcta:
+                            <ul>
+                                <% errores.forEach(function(error) { %>
+                                    <li><%= error.msg %></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+                    <% if (exitoReserva === true) { %>
+                        <div class="alert alert-success" role="alert">
+                            Su reserva para la instalación "<%= datos.inst.nombre %>" ha sido realizada con éxito para el día <%= datos.res.fecha %> entre las <%= datos.res.horaInicio %> y las <%= datos.res.horaFin %>
+                        </div>
+                    <% } %>
+                    <div class="container mt-5" id="formularioReserva">
+                        <form method="POST" action="/reserva/crear" >
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <!-- Fecha de la reserva -->
+                                    <div class="mb-3">
+                                        <label for="fecha">Dia</label>
+                                        <input id="fecha" class="form-control" type="date" name="fecha" required>
+                                    </div>
+                                    <!-- Campo Hora de Inicio -->
+                                    <div class="mb-3">
+                                        <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                                        <input type="time" step="3600" class="form-control" id="horaInicio" name="horaInicio" required>
+                                    </div>
+                    
+                                    <!-- Campo Hora de Fin -->
+                                    <div class="mb-3">
+                                        <label for="horaFin" class="form-label">Hora de Fin:</label>
+                                        <input type="time" step="3600" class="form-control" id="horaFin" name="horaFin" required>
+                                    </div>
+                                    <input type="hidden" id="idInstalacion" name="idInstalacion" value="<%=datos.idInstalacion%>">
+                                    <!-- Botón de Reservar -->
+                                    <button type="submit" class="btn btn-primary">Reservar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 <% } else { %>
                 <a href="/usuario/login" class="btn btn-primary">Inicie sesión para reservar</a>
                 <% }; %>
             </div>
-            <div class="container mt-5" id="formularioReserva">
-                <form method="POST" action="/reserva/crear" enctype="multipart/form-data" >
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- TODO: comprobrar que Inicio < Fin -->
-                            <!-- Fecha de la reserva -->
-                            <div class="mb-3">
-                                <label for="fecha">Dia</label>
-                                <input id="fecha" class="form-control" type="date" name="fecha" required>
-                            </div>
-                            <!-- Campo Hora de Inicio -->
-                            <div class="mb-3">
-                                <label for="horaInicio" class="form-label">Hora de Inicio:</label>
-                                <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
-                            </div>
-            
-                            <!-- Campo Hora de Fin -->
-                            <div class="mb-3">
-                                <label for="horaFin" class="form-label">Hora de Fin:</label>
-                                <input type="time" class="form-control" id="horaFin" name="horaFin" required>
-                            </div>
-                            <!-- Botón de Reservar -->
-                            <button type="submit" class="btn btn-primary">Reservar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
         </div>
         <%- include("footer") %>
-        <script src="/javascript/reserva.js"></script>
     </body>
 </html>

@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/usuario',require('./routes/usuario'));
 app.use('/instalacion',require('./routes/instalacion'));
 app.use('/mensajes', require('./routes/mensajes'));
+app.use('/reserva', require('./routes/reserva'));
 
 
 //Ruta página principal, en la que se muestran las instalaciones a reservar

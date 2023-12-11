@@ -18,20 +18,43 @@ router.get("/:id", function(req, res, next) {
     if(err){
       next(err);
     } else{
+      let datos = {};
       if(req.session.user !== undefined){
-        inst.session = req.session.user;
+        datos.session = req.session.user;
       }
-      console.log(inst);
-      res.render("instalacion", {datos: inst});
+      datos.inst = inst;
+      datos.idInstalacion = id;
+      res.render("instalacion", {datos, errores: {}});
     }
   });  
 });
 
-//TODO: mas checks
 router.post(
   "/crear", 
-  upload.single('imagenPerfil'),
+  upload.single('imagenInstalacion'),
   check("nombre", "El nombre es obligatorio").notEmpty(),
+  check("descripcion", "La descripción es obligatoria").notEmpty(),
+  check("tipoReserva", "El tipo de reserva es obligatorio").notEmpty(),
+  check("horaInicio", "La hora de inicio es obligatoria").notEmpty(),
+  check("horaFin", "La hora de fin es obligatoria").notEmpty(),
+  check("aforo", "El aforo es obligatorio").notEmpty(),
+  body('imagenInstalacion').custom((value, { req }) => {
+    if (!req.file) {
+      throw new Error('La imagen de la instalación es obligatoria');
+    }
+    return true;
+  }),
+  check('horaInicio').custom((value, { req }) => {
+
+    let horaInicio = value.split(":");
+    let horaFin = req.body.horaFin.split(":");
+    
+    if (horaInicio[0] < horaFin[0]) {
+      return true;
+    } else {
+      throw new Error("La hora de inicio ha de ser inferior a la hora de fin");
+    }
+  }),
   (req,res,next) =>{
     let datos = {};
     if(req.session.user !== undefined){
@@ -39,7 +62,7 @@ router.post(
     }
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.render("crearInstalacion", { datos: datos, errores: errors.array() });
+      return res.render("crearInstalacion", { datos: datos, errores: errors.array(), exitoReserva: false });
     }
     // Si no hay errores, recogemos los datos del formulario
     datos.nombre = req.body.nombre;

@@ -48,17 +48,16 @@
                         </select>
                         </div>
 
-                        <!-- TODO: comprobrar que Inicio < Fin -->
-                        <!-- Campo Hora de Inicio -->
+                        <!-- Campo Hora de Inicio (solo permitimos horas completas)-->
                         <div class="mb-3">
                             <label for="horaInicio" class="form-label">Hora de Inicio:</label>
-                            <input type="time" class="form-control" id="horaInicio" name="horaInicio" required>
+                            <input type="time" step="3600" class="form-control" id="horaInicio" name="horaInicio" required>
                         </div>
 
-                        <!-- Campo Hora de Fin -->
+                        <!-- Campo Hora de Fin (solo permitimos horas completas) -->
                         <div class="mb-3">
                             <label for="horaFin" class="form-label">Hora de Fin:</label>
-                            <input type="time" class="form-control" id="horaFin" name="horaFin" required>
+                            <input type="time" step="3600" class="form-control" id="horaFin" name="horaFin" required>
                         </div>
 
                         <!-- Campo Aforo -->
@@ -70,8 +69,8 @@
 
                         <!-- Campo Imagen -->
                         <div class="mb-3">
-                            <label for="imagenPerfil" class="form-label">Imagen de Perfil:</label>
-                            <input type="file" class="form-control" id="imagenPerfil" name="imagenPerfil" required>
+                            <label for="imagenInstalacion" class="form-label">Imagen de la Instalación:</label>
+                            <input type="file" class="form-control" id="imagenInstalacion" name="imagenInstalacion" accept="image/*" required>
                         </div>
 
                         <!-- Botón de Registro -->

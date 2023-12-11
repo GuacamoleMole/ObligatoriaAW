@@ -144,20 +144,19 @@ Estilos de la página de instalacion
   margin-top: 2rem;
 }
 
+.containerImagenInstalacion {
+  max-height: 480px;
+}
+
 .imagen-instalacion-main {
   height: 100%;
+  width: 100%;
   object-fit: cover;
-  max-height: 480px;
   border-radius: 2rem 0;
 }
 
 .info-detallada-instalacion {
   margin: 2rem;
-}
-
-#formularioReserva {
-  display: none;
-  margin-bottom: 2rem;
 }
 
 @media screen and (max-width: 992px) {
