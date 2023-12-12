@@ -228,6 +228,10 @@ Estilos de la lista de usuarios
   overflow: auto;
 }
 
+.resultadoHistorial {
+  height: auto;
+}
+
 /* 
 Estilos del footer
 */

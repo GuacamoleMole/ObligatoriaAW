@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/javascript/filtrosReservas.js"></script>
     </head>
     <body>
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
@@ -15,42 +17,117 @@
         <div class="container mt-5">
             <h1 class="mb-4">Historial de Reservas</h1>
             <h2>Búsqueda avanzada</h2>
-            <div class="mb-3">
-                <label for="facultad" class="form-label">Facultad:</label>
-                <select class="form-select" id="facultad" name="facultad" required>
-                    <option selected disabled value="">Selecciona una facultad</option>
-                    <option value="todos" selected>Todas las Facultades</option>
-                    <option value="Bellas Artes">Facultad de Bellas Artes</option>
-                    <option value="Ciencias Biológicas">Facultad de Ciencias Biológicas</option>
-                    <option value="Ciencias de la Documentación">Facultad de Ciencias de la Documentación</option>
-                    <option value="Ciencias de la Información">Facultad de Ciencias de la Información</option>
-                    <option value="Ciencias Económicas y Empresariales">Facultad de Ciencias Económicas y Empresariales</option>
-                    <option value="Ciencias Físicas">Facultad de Ciencias Físicas</option>
-                    <option value="Ciencias Geológicas">Facultad de Ciencias Geológicas</option>
-                    <option value="Ciencias Matemáticas">Facultad de Ciencias Matemáticas</option>
-                    <option value="Ciencias Políticas y Sociología">Facultad de Ciencias Políticas y Sociología</option>
-                    <option value="Ciencias Químicas">Facultad de Ciencias Químicas</option>
-                    <option value="Comercio y Turismo">Facultad de Comercio y Turismo</option>
-                    <option value="Derecho">Facultad de Derecho</option>
-                    <option value="Educación">Facultad de Educación</option>
-                    <option value="Enfermería, Fisioterapia y Podología">Facultad de Enfermería, Fisioterapia y Podología</option>
-                    <option value="Estudios Estadísticos">Facultad de Estudios Estadísticos</option>
-                    <option value="Farmacia">Facultad de Farmacia</option>
-                    <option value="Filología">Facultad de Filología</option>
-                    <option value="Filosofía">Facultad de Filosofía</option>
-                    <option value="Geografía e Historia">Facultad de Geografía e Historia</option>
-                    <option value="Informática">Facultad de Informática</option>
-                    <option value="Medicina">Facultad de Medicina</option>
-                    <option value="Odontología">Facultad de Odontología</option>
-                    <option value="Óptica y Optometría">Facultad de Óptica y Optometría</option>
-                    <option value="Psicología">Facultad de Psicología</option>
-                    <option value="Trabajo Social">Facultad de Trabajo Social</option>
-                    <option value="Veterinaria">Facultad de Veterinaria</option>
-                </select>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="facultad" class="form-label">Facultad:</label>
+                    <select class="form-select" id="facultad" name="facultad" required>
+                        <option value="todos" selected>Todas las Facultades</option>
+                        <option value="Bellas Artes">Facultad de Bellas Artes</option>
+                        <option value="Ciencias Biológicas">Facultad de Ciencias Biológicas</option>
+                        <option value="Ciencias de la Documentación">Facultad de Ciencias de la Documentación</option>
+                        <option value="Ciencias de la Información">Facultad de Ciencias de la Información</option>
+                        <option value="Ciencias Económicas y Empresariales">Facultad de Ciencias Económicas y Empresariales</option>
+                        <option value="Ciencias Físicas">Facultad de Ciencias Físicas</option>
+                        <option value="Ciencias Geológicas">Facultad de Ciencias Geológicas</option>
+                        <option value="Ciencias Matemáticas">Facultad de Ciencias Matemáticas</option>
+                        <option value="Ciencias Políticas y Sociología">Facultad de Ciencias Políticas y Sociología</option>
+                        <option value="Ciencias Químicas">Facultad de Ciencias Químicas</option>
+                        <option value="Comercio y Turismo">Facultad de Comercio y Turismo</option>
+                        <option value="Derecho">Facultad de Derecho</option>
+                        <option value="Educación">Facultad de Educación</option>
+                        <option value="Enfermería, Fisioterapia y Podología">Facultad de Enfermería, Fisioterapia y Podología</option>
+                        <option value="Estudios Estadísticos">Facultad de Estudios Estadísticos</option>
+                        <option value="Farmacia">Facultad de Farmacia</option>
+                        <option value="Filología">Facultad de Filología</option>
+                        <option value="Filosofía">Facultad de Filosofía</option>
+                        <option value="Geografía e Historia">Facultad de Geografía e Historia</option>
+                        <option value="Informática">Facultad de Informática</option>
+                        <option value="Medicina">Facultad de Medicina</option>
+                        <option value="Odontología">Facultad de Odontología</option>
+                        <option value="Óptica y Optometría">Facultad de Óptica y Optometría</option>
+                        <option value="Psicología">Facultad de Psicología</option>
+                        <option value="Trabajo Social">Facultad de Trabajo Social</option>
+                        <option value="Veterinaria">Facultad de Veterinaria</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="instalacion" class="form-label">Instalación:</label>
+                    <select class="form-select" id="instalacion" name="instalacion" required>
+                        <option value="todas" selected>Todas las Instalaciones</option>
+                        <option value="Bellas Artes">Gimnasio</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Campo Email -->
+                <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email del usuario:</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+                </div>
+    
+                <!-- Campo Hora Inicio -->
+                <div class="col-md-3">
+                <label for="horaInicio" class="form-label">Hora de Inicio:</label>
+                <input type="time" step="3600" class="form-control" id="horaInicio" name="horaInicio" required>
+                </div>
+
+                <!-- Campo Hora Fin -->
+                <div class="col-md-3">
+                    <label for="horaFin" class="form-label">Hora de Fin:</label>
+                    <input type="time" step="3600" class="form-control" id="horaFin" name="horaFin" required>
+                    </div>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Campo Fecha -->
+                <div class="col-md-6 mb-3">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" required>
+                </div>
+            </div>
+
+            <h2>Resultados</h2>
+            <div class="row">
+                <% datos.reservas.forEach(function(reserva) { %>
+                    <div class="col-md-12 text-center mb-3">
+                        <div class="resultadoBusqueda resultadoHistorial">
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Nombre: </span><span class="campoUsuarioNombre"><%= reserva.nombre %></span></span>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Apellidos: </span><span class="campoUsuarioApellidos"><%= reserva.apellidos %></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Email: </span><span class="campoUsuarioEmail"><%= reserva.email %></span></span>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Instalación: </span><span class="campoUsuarioInstalacion"><%= reserva.instalacion %></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Fecha: </span><span class="campoUsuarioFecha"><%= reserva.fecha %></span></span>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Facultad: </span>Facultad de <span class="campoUsuarioFacultad"></span><%= reserva.facultad %></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Hora Inicio: </span><span class="campoUsuarioHoraInicio"><%= reserva.hora_inicio.slice(0, 5) %></span></span>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Hora Fin: </span><span class="campoUsuarioHoraFin"><%= reserva.hora_fin.slice(0, 5) %></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
             </div>
         </div>
         <%- include("footer") %>
-        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-        <script src="/javascript/validacionJQuery.js"></script>
     </body>
 </html>

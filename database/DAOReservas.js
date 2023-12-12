@@ -30,6 +30,43 @@ class DAOReservas {
     });
   }
 
+  buscarTodasReservas(callback) {
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(reservasQueries.buscarTodas, function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data);
+          }
+        });
+      }
+    });
+  }
+
+  // Obtener toda la información de las reservas, pasándole el id de usuario y de instalación, haciendo joins con las tablas de usuario e instalacion
+  obtenerTodaInformacionReservas(callback) {
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(reservasQueries.obtenerTodaInformacionReservas, function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data);
+          }
+        });
+      }
+    });
+  }
+
   terminarConexion(callback) {
     this.pool.end();
   }

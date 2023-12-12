@@ -7,6 +7,8 @@ const daoUsuario = new DAOUsuario();
 const multer = require("multer");
 const { body, check, validationResult } = require("express-validator");
 const { type } = require("os");
+const DAOReservas = require('../database/DAOReservas');
+const daoReservas = new DAOReservas();
 const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
 const upload = multer({ storage: storage });
 const router = Router();
@@ -174,8 +176,7 @@ router.get('/:id', (req, res, next) => {
         if(req.session.user !== undefined){
           datos.session = req.session.user;
         }
-        console.log(datos);
-        res.render('cuentaUsuario', { datos: datos });
+        res.render('cuentaUsuario', { datos });
       }
     }
   });
@@ -191,7 +192,7 @@ router.get('/admin/pendientes', (req,res,next) => {
       if(req.session.user !== undefined){
         datos.session = req.session.user;
       }
-      res.render("pendientes" , { datos: datos });
+      res.render("pendientes" , { datos });
     }
   });
 });
@@ -219,7 +220,7 @@ router.get('/admin/hacerAdmin', (req,res,next) =>{
       if(req.session.user !== undefined){
         datos.session = req.session.user;
       }
-      res.render("hacerAdmin" , { datos: datos });
+      res.render("hacerAdmin" , { datos });
     }
   })
 });
@@ -243,7 +244,7 @@ router.get("/admin/crearInstalacion", (req,res,next) =>{
   }
 
   res.status(200);
-  res.render("crearInstalacion", { datos: datos, errores: {} });
+  res.render("crearInstalacion", { datos, errores: {} });
 });
 
 router.get("/admin/configuracionSistema", (req,res,next) =>{
@@ -254,7 +255,7 @@ router.get("/admin/configuracionSistema", (req,res,next) =>{
   }
 
   res.status(200);
-  res.render("configuracionSistema", { datos: datos, errores: {} });
+  res.render("configuracionSistema", { datos, errores: {} });
 });
 
 router.get("/admin/historialReservas", (req,res,next) =>{
@@ -264,8 +265,18 @@ router.get("/admin/historialReservas", (req,res,next) =>{
     datos.session = req.session.user;
   }
 
-  res.status(200);
-  res.render("historialReservas", { datos: datos });
+  daoReservas.obtenerTodaInformacionReservas((err,reservas) => {
+    if(err)
+      next(err);
+    else{
+      datos.reservas = reservas;
+      for (let i = 0; i < datos.reservas.length; i++) {
+        datos.reservas[i].fecha = new Date(datos.reservas[i].fecha).toLocaleDateString();
+      }
+      res.status(200);
+      res.render("historialReservas", { datos });
+    }
+  });
 });
 
 router.get("/admin/listarUsuarios", (req,res,next) =>{
@@ -280,7 +291,7 @@ router.get("/admin/listarUsuarios", (req,res,next) =>{
     else{
       datos.usuarios = usuarios;
       res.status(200);
-      res.render("listarUsuarios", { datos: datos });
+      res.render("listarUsuarios", { datos });
     }
   });
 });
