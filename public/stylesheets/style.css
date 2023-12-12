@@ -183,10 +183,6 @@ Estilos de la página de mensajes
   font-weight: 800;
 }
 
-/*  
-Estilos de la sección de comentarios
-*/
-
 .mensajeContainer {
   margin: 1rem 0 1rem 0;
   padding: 1rem;
@@ -220,6 +216,18 @@ Estilos de la sección de comentarios
   font-weight: 700;
 }
 
+/*
+Estilos de la lista de usuarios
+*/
+
+.resultadoBusqueda {
+  border: 1px solid #7e10a3;
+  border-radius: .5rem;
+  height: 11rem;
+  padding: .5rem;
+  overflow: auto;
+}
+
 /* 
 Estilos del footer
 */
@@ -232,7 +240,7 @@ Estilos del footer
   padding: 3rem;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 110%;
+  width: 101%;
 }
 
 .footer-text-container {

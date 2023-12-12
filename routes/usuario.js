@@ -274,9 +274,15 @@ router.get("/admin/listarUsuarios", (req,res,next) =>{
   if(req.session.user !== undefined){
     datos.session = req.session.user;
   }
-
-  res.status(200);
-  res.render("listarUsuarios", { datos: datos, errores: {} });
+  daoUsuario.buscarValidados((err,usuarios) => {
+    if(err)
+      next(err);
+    else{
+      datos.usuarios = usuarios;
+      res.status(200);
+      res.render("listarUsuarios", { datos: datos, errores: {} });
+    }
+  });
 });
 
 module.exports = router;

@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/javascript/filtrosUsuarios.js"></script>
     </head>
     <body>
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
@@ -23,8 +25,83 @@
         <% } %>
 
         <div class="container mt-5">
-            <h1 class="mb-4">Lista de usuarios</h1>
-            <!-- TODO: búsqueda avanzada con filtros (por facultad, curso...) -->
+            <h1 class="mb-4">Lista de usuarios validados</h1>
+            <h2>Búsqueda avanzada</h2>
+            <div class="mb-3">
+                <label for="facultad" class="form-label">Facultad:</label>
+                <select class="form-select" id="facultad" name="facultad" required>
+                    <option selected disabled value="">Selecciona una facultad</option>
+                    <option value="todos" selected>Todas las Facultades</option>
+                    <option value="Bellas Artes">Facultad de Bellas Artes</option>
+                    <option value="Ciencias Biológicas">Facultad de Ciencias Biológicas</option>
+                    <option value="Ciencias de la Documentación">Facultad de Ciencias de la Documentación</option>
+                    <option value="Ciencias de la Información">Facultad de Ciencias de la Información</option>
+                    <option value="Ciencias Económicas y Empresariales">Facultad de Ciencias Económicas y Empresariales</option>
+                    <option value="Ciencias Físicas">Facultad de Ciencias Físicas</option>
+                    <option value="Ciencias Geológicas">Facultad de Ciencias Geológicas</option>
+                    <option value="Ciencias Matemáticas">Facultad de Ciencias Matemáticas</option>
+                    <option value="Ciencias Políticas y Sociología">Facultad de Ciencias Políticas y Sociología</option>
+                    <option value="Ciencias Químicas">Facultad de Ciencias Químicas</option>
+                    <option value="Comercio y Turismo">Facultad de Comercio y Turismo</option>
+                    <option value="Derecho">Facultad de Derecho</option>
+                    <option value="Educación">Facultad de Educación</option>
+                    <option value="Enfermería, Fisioterapia y Podología">Facultad de Enfermería, Fisioterapia y Podología</option>
+                    <option value="Estudios Estadísticos">Facultad de Estudios Estadísticos</option>
+                    <option value="Farmacia">Facultad de Farmacia</option>
+                    <option value="Filología">Facultad de Filología</option>
+                    <option value="Filosofía">Facultad de Filosofía</option>
+                    <option value="Geografía e Historia">Facultad de Geografía e Historia</option>
+                    <option value="Informática">Facultad de Informática</option>
+                    <option value="Medicina">Facultad de Medicina</option>
+                    <option value="Odontología">Facultad de Odontología</option>
+                    <option value="Óptica y Optometría">Facultad de Óptica y Optometría</option>
+                    <option value="Psicología">Facultad de Psicología</option>
+                    <option value="Trabajo Social">Facultad de Trabajo Social</option>
+                    <option value="Veterinaria">Facultad de Veterinaria</option>
+                </select>
+            </div>
+            <div class="row mb-3">
+                <!-- Campo Nombre -->
+                <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+    
+                <!-- Campo Apellidos -->
+                <div class="col-md-6">
+                <label for="apellidos" class="form-label">Apellidos:</label>
+                <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                </div>
+            </div>
+
+            <h2>Resultados</h2>
+            <div class="row">
+                <% datos.usuarios.forEach(function(usuario) { %>
+                    <div class="col-md-6 text-center mb-3">
+                        <div class="resultadoBusqueda">
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Nombre: </span><span class="campoUsuarioNombre"><%= usuario.nombre %></span></span>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <span><span class="campoUsuario">Apellidos: </span><span class="campoUsuarioApellidos"><%= usuario.apellidos %></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <span><span class="campoUsuario">Facultad: </span>Facultad de <span class="campoUsuarioFacultad"><%= usuario.facultad %></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <span><span class="campoUsuario">Correo: </span><%= usuario.email %></span>
+                                </div>
+                            </div>
+                            <a href="/usuario/<%= usuario.id %>" class="btn btn-primary">Visitar perfil</a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
         <%- include("footer") %>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>

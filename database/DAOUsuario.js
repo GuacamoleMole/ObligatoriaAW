@@ -116,6 +116,24 @@ class DAOUsuario {
     });
   }
 
+  buscarValidados(callback) {
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(usuQueries.buscarValidados, function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data); //devolvemos todos los no validados
+          }
+        });
+      }
+    });
+  }
+
   validarUsuario(id, callback){
     this.pool.getConnection((err, connection) => {
       if(err)
