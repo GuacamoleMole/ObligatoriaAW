@@ -133,7 +133,7 @@ Estilos de la página main
 
 .cuerpoTarjetaInstalacion {
   height: 10rem;
-  overflow: scroll;
+  overflow: auto;
 }
 
 /*
@@ -230,6 +230,7 @@ Estilos de la lista de usuarios
 
 .resultadoHistorial {
   height: auto;
+  overflow: hidden;
 }
 
 /* 
