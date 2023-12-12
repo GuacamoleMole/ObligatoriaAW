@@ -2,7 +2,9 @@
 const conf = require("./database/configuration")
 const express = require('express');
 const DAOInstalaciones = require('./database/DAOInstalaciones')
+const DAOConfiguracion = require('./database/DAOConfiguracion')
 const daoInstalaciones = new DAOInstalaciones();
+const daoConfiguracion = new DAOConfiguracion();
 const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
@@ -32,6 +34,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Middleware para cargar la configuración antes de enrutar las solicitudes
+app.use((req, res, next) => {
+  // Llamada a buscarConf para obtener la configuración
+  daoConfiguracion.buscarConf((err, configuracion) => {
+    if (err) {
+      console.error('Error al buscar la configuración:', err);
+    } else {
+      // Almacena la configuración en req.app.locals para que esté disponible en todas las rutas
+      req.app.locals.configuracion = configuracion;
+    }
+    // Continúa con el siguiente middleware o la ruta
+    next();
+  });
+});
+
 app.use('/usuario',require('./routes/usuario'));
 app.use('/instalacion',require('./routes/instalacion'));
 app.use('/mensajes', require('./routes/mensajes'));
@@ -50,7 +67,7 @@ app.get("/", function(req, res, next) {
         datos.session = req.session.user;
       }
       datos.instalaciones = instalaciones;
-      console.log(datos);
+      console.log(req.app.locals.configuracion);
       res.render("index", {datos});
     }
   });
