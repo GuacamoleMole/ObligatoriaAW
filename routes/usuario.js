@@ -8,7 +8,9 @@ const multer = require("multer");
 const { body, check, validationResult } = require("express-validator");
 const { type } = require("os");
 const DAOReservas = require('../database/DAOReservas');
+const DAOInstalaciones = require('../database/DAOInstalaciones');
 const daoReservas = new DAOReservas();
+const daoInstalaciones = new DAOInstalaciones();
 const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
 const upload = multer({ storage: storage });
 const router = Router();
@@ -273,8 +275,15 @@ router.get("/admin/historialReservas", (req,res,next) =>{
       for (let i = 0; i < datos.reservas.length; i++) {
         datos.reservas[i].fecha = new Date(datos.reservas[i].fecha).toLocaleDateString();
       }
-      res.status(200);
-      res.render("historialReservas", { datos });
+      daoInstalaciones.buscarTodasInstalaciones((err,instalaciones) => {
+        if(err)
+          next(err);
+        else{
+          datos.instalaciones = instalaciones;
+          res.status(200);
+          res.render("historialReservas", { datos });
+        }
+      });
     }
   });
 });

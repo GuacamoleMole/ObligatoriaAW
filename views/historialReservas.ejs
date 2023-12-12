@@ -54,7 +54,9 @@
                     <label for="instalacion" class="form-label">Instalación:</label>
                     <select class="form-select" id="instalacion" name="instalacion" required>
                         <option value="todas" selected>Todas las Instalaciones</option>
-                        <option value="Gimnasio">Gimnasio</option>
+                        <% datos.instalaciones.forEach(function(instalacion) { %>
+                            <option value="<%= instalacion.nombre %>"><%= instalacion.nombre %></option>
+                        <% }) %>
                     </select>
                 </div>
             </div>
