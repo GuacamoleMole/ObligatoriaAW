@@ -265,7 +265,7 @@ router.get("/admin/historialReservas", (req,res,next) =>{
   }
 
   res.status(200);
-  res.render("historialReservas", { datos: datos, errores: {} });
+  res.render("historialReservas", { datos: datos });
 });
 
 router.get("/admin/listarUsuarios", (req,res,next) =>{
@@ -280,7 +280,7 @@ router.get("/admin/listarUsuarios", (req,res,next) =>{
     else{
       datos.usuarios = usuarios;
       res.status(200);
-      res.render("listarUsuarios", { datos: datos, errores: {} });
+      res.render("listarUsuarios", { datos: datos });
     }
   });
 });

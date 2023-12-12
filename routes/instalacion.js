@@ -24,7 +24,7 @@ router.get("/:id", function(req, res, next) {
       }
       datos.inst = inst;
       datos.idInstalacion = id;
-      res.render("instalacion", {datos, errores: {}});
+      res.render("instalacion", {datos, errores: {}, exitoReserva: false});
     }
   });  
 });
