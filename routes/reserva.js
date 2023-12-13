@@ -11,10 +11,11 @@ router.post(
     check("fecha").custom((fecha) => {
         const fechaIntroducida = new Date(fecha);
         const hoy = new Date();
-    
+        console.log(fechaIntroducida)
+        console.log(hoy);
         // Compare the selected date with today's date
         if (fechaIntroducida < hoy) {
-          throw new Error('La fecha seleccionada debe ser hoy o en el futuro');
+          throw new Error('La fecha seleccionada debe ser para mañana o posterior');
         }
     
         return true;
@@ -59,7 +60,8 @@ router.post(
                 reserva.horaInicio = req.body.horaInicio;
                 reserva.horaFin = req.body.horaFin;
                 datos.res = reserva;
-        
+                console.log(reserva);
+                console.log(datos);
                 daoReservas.realizarReserva(reserva, (err, idRes) => {
                     if (err) {
                         next(err);
