@@ -182,7 +182,7 @@ router.get("/:id", (req, res, next) => {
         datos.validado = usuario.validado;
         if (datos.validado) datos.vali = "SÍ";
         else datos.vali = "NO";
-        //TODO: falta cargar la foto
+        datos.conf = req.app.locals.configuracion
 
         if (req.session.user !== undefined) {
           datos.session = req.session.user;
@@ -202,6 +202,7 @@ router.get("/admin/pendientes", (req, res, next) => {
       if (req.session.user !== undefined) {
         datos.session = req.session.user;
       }
+      datos.conf = req.app.locals.configuracion
       res.render("pendientes", { datos });
     }
   });
@@ -228,6 +229,7 @@ router.get("/admin/hacerAdmin", (req, res, next) => {
       if (req.session.user !== undefined) {
         datos.session = req.session.user;
       }
+      datos.conf = req.app.locals.configuracion
       res.render("hacerAdmin", { datos });
     }
   });
@@ -249,7 +251,7 @@ router.get("/admin/crearInstalacion", (req, res, next) => {
   if (req.session.user !== undefined) {
     datos.session = req.session.user;
   }
-
+  datos.conf = req.app.locals.configuracion
   res.status(200);
   res.render("crearInstalacion", { datos, errores: {} });
 });
@@ -260,7 +262,7 @@ router.get("/admin/configuracionSistema", (req, res, next) => {
   if (req.session.user !== undefined) {
     datos.session = req.session.user;
   }
-
+  datos.conf = req.app.locals.configuracion
   res.status(200);
   res.render("configuracionSistema", { datos, errores: {} });
 });
@@ -315,6 +317,7 @@ router.get("/admin/historialReservas", (req, res, next) => {
   if (req.session.user !== undefined) {
     datos.session = req.session.user;
   }
+  datos.conf = req.app.locals.configuracion
 
   daoReservas.obtenerTodaInformacionReservas((err, reservas) => {
     if (err) next(err);
@@ -343,6 +346,7 @@ router.get("/admin/listarUsuarios", (req, res, next) => {
   if (req.session.user !== undefined) {
     datos.session = req.session.user;
   }
+  datos.conf = req.app.locals.configuracion
   daoUsuario.buscarValidados((err, usuarios) => {
     if (err) next(err);
     else {

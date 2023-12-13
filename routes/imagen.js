@@ -47,7 +47,7 @@ router.get("/logo", (req, res, next) => {
     if (err) {
       next(err);
     } else {
-      const imageBuffer = Buffer.from(img.foto.data);
+      const imageBuffer = Buffer.from(img.logo.data);
       res.end(imageBuffer);
     }
   });

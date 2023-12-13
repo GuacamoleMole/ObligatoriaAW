@@ -35,6 +35,7 @@ router.post(
         if(req.session.user !== undefined){
             datos.session = req.session.user;
         }
+        datos.conf = req.app.locals.configuracion
 
         let idInstalacion = req.body.idInstalacion;
 

@@ -25,6 +25,7 @@ router.get("/:id", function(req, res, next) {
       if(req.session.user !== undefined){
         datos.session = req.session.user;
       }
+      datos.conf = req.app.locals.configuracion
       datos.inst = inst;
       datos.idInstalacion = id;
       res.render("instalacion", {datos, errores: {}, exitoReserva: false});

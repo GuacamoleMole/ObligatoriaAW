@@ -68,6 +68,8 @@ app.get("/", function(req, res, next) {
         datos.session = req.session.user;
       }
       datos.instalaciones = instalaciones;
+      datos.conf = req.app.locals.configuracion
+      console.log(datos.conf)
       res.render("index", {datos});
     }
   });
