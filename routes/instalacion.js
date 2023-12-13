@@ -12,8 +12,12 @@ const upload = multer({ storage: storage });
 
 //Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
 router.get("/:id", function(req, res, next) {
-  const id = req.params.id;
-  
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
   daoInstalaciones.buscarPorId(id, (err,inst) =>{
     if(err){
       next(err);

@@ -161,7 +161,12 @@ router.delete("/logout", function (req, res, next) {
 // Ruta para mostrar la página de usuario con EJS
 router.get("/:id", (req, res, next) => {
   let datos = {};
-  const id = req.params.id;
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
   datos.id = id; // Obtener el parámetro de la URL
 
   daoUsuario.buscarPorID(id, (err, usuario) => {
@@ -209,7 +214,12 @@ router.get("/admin/pendientes", (req, res, next) => {
 });
 
 router.put("/admin/validar/:id", (req, res, next) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
   daoUsuario.validarUsuario(id, (err) => {
     if (err) next(err);
     else {
@@ -236,7 +246,12 @@ router.get("/admin/hacerAdmin", (req, res, next) => {
 });
 
 router.put("/admin/hacerAdmin/:id", (req, res, next) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
   daoUsuario.hacerAdmin(id, (err) => {
     if (err) next(err);
     else {
