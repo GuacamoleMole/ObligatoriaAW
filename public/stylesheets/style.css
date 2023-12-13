@@ -136,6 +136,10 @@ Estilos de la página main
   overflow: auto;
 }
 
+.imagenTarjetaInstalacion {
+  height: 23rem;
+  object-fit: cover;
+}
 /*
 Estilos de la página de instalacion
 */

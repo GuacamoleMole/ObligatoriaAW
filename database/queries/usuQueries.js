@@ -12,6 +12,8 @@ module.exports = {
 
   buscarValidados: 'SELECT * FROM UCM_AW_RIU_USU_Usuarios WHERE validado = 1',
 
+  buscarValidadosPorFacultad: 'SELECT * FROM UCM_AW_RIU_USU_Usuarios WHERE validado = 1 AND facultad = ?',
+
   buscarRolUsuario: 'SELECT * FROM UCM_AW_RIU_USU_Usuarios WHERE rol = "usuario" AND validado = 1',
 
   validarUsuario: 'UPDATE UCM_AW_RIU_USU_Usuarios SET validado = 1 WHERE id = ?',

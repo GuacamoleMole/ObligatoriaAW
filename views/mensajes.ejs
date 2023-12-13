@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Reservar instalación</title>
+        <title>Mensajes</title>
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -19,7 +19,7 @@
             <h1>Mensajes <%= datos.id %></h1>
             <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeFacultad" >+ Mensaje a la Facultad</button>
             <!-- TODO: Solo mostrar este botón a administradores (cuando Samuel añada en el session el rol del usuario) -->
-            <button class="btn btn-primary mb-2">+ Mensaje a la Organización</button>
+            <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeOrganizacion">+ Mensaje a la Organización</button>
 
             <% if (datos.mensajes.length === 0) { %>
                 <div class="alert alert-info" role="alert">
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <!-- Modal de confirmación de la reserva -->
+        <!-- Modal de envío de mensaje a algún miembro de la facultad -->
         <div class="modal fade" id="modalNuevoMensajeFacultad" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalNuevoMensajeFacultad" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -70,7 +70,7 @@
                         <label for="nombreDestinatarioFacultad" class="col-form-label">Destinatario:</label>
                         <select class="form-select" id="nombreDestinatarioFacultad" name="nombreDestinatarioFacultad" required>
                             <option value="" selected>Selecciona un destinatario</option>
-                            <% datos.usuarios.forEach(function(usuario) { %>
+                            <% datos.usuariosFacultad.forEach(function(usuario) { %>
                                 <option value="<%= usuario.email %>"><%= usuario.email %></option>
                             <% }) %>
                         </select>
@@ -80,6 +80,40 @@
 
                         <label for="mensajeFacultad" class="col-form-label">Mensaje:</label>
                         <textarea class="form-control" rows="5" id="mensajeFacultad" name="mensajeFacultad" required></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                  </div>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal de envío de mensaje a algún miembro de la Organizacion -->
+        <div class="modal fade" id="modalNuevoMensajeOrganizacion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalNuevoMensajeOrganizacion" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje a algún miembro de tu organizacion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="nombreDestinatarioOrganizacion" class="col-form-label">Destinatario:</label>
+                        <select class="form-select" id="nombreDestinatarioOrganizacion" name="nombreDestinatarioOrganizacion" required>
+                            <option value="" selected>Selecciona un destinatario</option>
+                            <% datos.usuariosOrganizacion.forEach(function(usuario) { %>
+                                <option value="<%= usuario.email %>"><%= usuario.email %></option>
+                            <% }) %>
+                        </select>
+
+                        <label for="asuntoOrganizacion" class="col-form-label">Asunto:</label>
+                        <input type="text" class="form-control" id="asuntoOrganizacion" name="asuntoOrganizacion" required>
+
+                        <label for="mensajeOrganizacion" class="col-form-label">Mensaje:</label>
+                        <textarea class="form-control" rows="5" id="mensajeOrganizacion" name="mensajeOrganizacion" required></textarea>
                       </div>
                   </div>
                   <div class="modal-footer">

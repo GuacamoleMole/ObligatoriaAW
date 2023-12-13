@@ -28,14 +28,26 @@ router.get("/:id", function(req, res, next) {
               if (usuarios === undefined) {
                   next();
               } else {
-                  datos.usuarios = usuarios;
-                  console.log(usuarios);
+                  datos.usuariosOrganizacion = usuarios;
+                  const facultad = req.session.user.facultad;
+                  daoUsuario.buscarValidadosPorFacultad(facultad, (err, usuariosFac) => {
+                      if (err) {
+                          next(err);
+                      } else {
+                          if (usuariosFac === undefined) {
+                              next();
+                          } else {
+                              datos.usuariosFacultad = usuariosFac;
+                          }
+                          if(req.session.user !== undefined) {
+                            console.log(req.session.user);
+                              datos.session = req.session.user;
+                          }
+                          res.status(200);
+                          res.render("mensajes", {datos});
+                      }
+                  });
               }
-              if(req.session.user !== undefined) {
-                  datos.session = req.session.user;
-              }
-              res.status(200);
-              res.render("mensajes", {datos});
           }
       });
     }
