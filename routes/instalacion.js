@@ -18,6 +18,9 @@ router.get("/:id", function(req, res, next) {
     if(err){
       next(err);
     } else{
+      //Si no existe el destino URL va a el middleware de rutas no encontrada
+      if(inst === undefined)
+        next();
       let datos = {};
       if(req.session.user !== undefined){
         datos.session = req.session.user;

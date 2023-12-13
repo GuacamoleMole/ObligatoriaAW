@@ -53,6 +53,7 @@ app.use('/usuario',require('./routes/usuario'));
 app.use('/instalacion',require('./routes/instalacion'));
 app.use('/mensajes', require('./routes/mensajes'));
 app.use('/reserva', require('./routes/reserva'));
+app.use('/imagen', require('./routes/imagen'));
 
 
 //Ruta página principal, en la que se muestran las instalaciones a reservar
@@ -67,7 +68,6 @@ app.get("/", function(req, res, next) {
         datos.session = req.session.user;
       }
       datos.instalaciones = instalaciones;
-      console.log(req.app.locals.configuracion);
       res.render("index", {datos});
     }
   });

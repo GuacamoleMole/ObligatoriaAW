@@ -287,27 +287,20 @@ router.post(
     datos.calle = req.body.direccion;
     datos.ciudad = req.body.ciudad;
     datos.pais = req.body.pais;
-    if (req.file) datos.logo = req.file.buffer;
-    daoConfiguracion.elimiarConf((err, rows) => {
+    if (req.file) 
+     datos.logo = req.file.buffer;
+    daoConfiguracion.cambiarConf(datos, (err, id) => {
       if (err) {
         next(err);
       } else {
-        daoConfiguracion.nuevaConf(datos, (err, id) => {
+        // Recargar la configuración y almacenarla en req.app.locals.configuracion
+        daoConfiguracion.buscarConf((err, configuracion) => {
           if (err) {
             next(err);
-          } else {
-            // Recargar la configuración y almacenarla en req.app.locals.configuracion
-            daoConfiguracion.buscarConf((err, configuracion) => {
-              if (err) {
-                return next(err);
-              }
-
-              req.app.locals.configuracion = configuracion;
-
-              // Redirigir a la página principal
-              res.redirect("/");
-            });
           }
+          req.app.locals.configuracion = configuracion;
+          // Redirigir a la página principal
+          res.redirect("/");
         });
       }
     });
