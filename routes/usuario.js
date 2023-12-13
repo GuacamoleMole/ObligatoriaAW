@@ -53,7 +53,7 @@ router.post(
             next(err);
           }
           if (valid) {
-            req.session.user = { email: email, id: usr.id, nombre: usr.nombre, facultad: usr.facultad };
+            req.session.user = { email: email, id: usr.id, nombre: usr.nombre, facultad: usr.facultad, rol: usr.rol };
             res.redirect("/");
           } else {
             errors.errors.push({
@@ -137,7 +137,8 @@ router.post(
                 email: datos.email,
                 id: usr,
                 nombre: datos.nombre,
-                facultad: datos.facultad
+                facultad: datos.facultad,
+                rol: datos.rol
               };
               res.redirect("/");
             }

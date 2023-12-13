@@ -18,8 +18,9 @@
         <div class="container mt-5">
             <h1>Mensajes <%= datos.id %></h1>
             <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeFacultad" >+ Mensaje a la Facultad</button>
-            <!-- TODO: Solo mostrar este botón a administradores (cuando Samuel añada en el session el rol del usuario) -->
-            <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeOrganizacion">+ Mensaje a la Organización</button>
+            <% if (datos.session.rol === "admin") { %>
+                <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeOrganizacion">+ Mensaje a la Organización</button>
+            <% } %>
 
             <% if (datos.mensajes.length === 0) { %>
                 <div class="alert alert-info" role="alert">
@@ -29,7 +30,7 @@
                 <% datos.mensajes.forEach(function (mensaje) { %>
                     <div class="mensajeContainer">
                         <div class="row headerMensaje">
-                            <span><%= mensaje.nombre %></span>
+                            <span><%= mensaje.nombre %> <%= mensaje.apellidos %></span>
                             <p class="emailMensaje"><%= mensaje.email %></p>
                         </div>
                         <div class="row asuntoMensaje">
@@ -41,86 +42,73 @@
                     </div>
                 <% }); %>
             <% } %>
-
-            <div class="mensajeContainer">
-                <div class="row headerMensaje">
-                    <span>Samuel Parra Calderón</span>
-                    <p class="emailMensaje">sparrac@ucm.es</p>
-                </div>
-                <div class="row asuntoMensaje">
-                    <p>Esto es un asunto de ejemplo</p>
-                </div>
-                <div class="row contenidoMensaje">
-                    <p>Esto es otro mensaje de prueba. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius inventore eligendi sed adipisci corrupti iure maiores ipsum laborum magnam ullam! Recusandae nulla odit, ipsum unde tempore consequatur dicta possimus illum.</p>
-                </div>
-            </div>
         </div>
 
         <!-- Modal de envío de mensaje a algún miembro de la facultad -->
         <div class="modal fade" id="modalNuevoMensajeFacultad" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalNuevoMensajeFacultad" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje a algún miembro de tu facultad</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje a algún miembro de tu facultad</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/mensajes/enviarFacultad">
+                            <div class="form-group">
+                                <label for="emailDestinatarioFacultad" class="col-form-label">Destinatario:</label>
+                                <select class="form-select" id="emailDestinatarioFacultad" name="emailDestinatarioFacultad" required>
+                                    <option value="" selected>Selecciona un destinatario</option>
+                                    <% datos.usuariosFacultad.forEach(function(usuario) { %>
+                                        <option value="<%= usuario.email %>"><%= usuario.email %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="asuntoFacultad" class="col-form-label">Asunto:</label>
+                                <input type="text" class="form-control" id="asuntoFacultad" name="asuntoFacultad" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensajeFacultad" class="col-form-label">Mensaje:</label>
+                                <textarea class="form-control" rows="5" id="mensajeFacultad" name="mensajeFacultad" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Enviar mensaje</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form>
-                      <div class="form-group">
-                        <label for="nombreDestinatarioFacultad" class="col-form-label">Destinatario:</label>
-                        <select class="form-select" id="nombreDestinatarioFacultad" name="nombreDestinatarioFacultad" required>
-                            <option value="" selected>Selecciona un destinatario</option>
-                            <% datos.usuariosFacultad.forEach(function(usuario) { %>
-                                <option value="<%= usuario.email %>"><%= usuario.email %></option>
-                            <% }) %>
-                        </select>
-
-                        <label for="asuntoFacultad" class="col-form-label">Asunto:</label>
-                        <input type="text" class="form-control" id="asuntoFacultad" name="asuntoFacultad" required>
-
-                        <label for="mensajeFacultad" class="col-form-label">Mensaje:</label>
-                        <textarea class="form-control" rows="5" id="mensajeFacultad" name="mensajeFacultad" required></textarea>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
-                  </div>
-                </form>
-            </div>
             </div>
         </div>
 
         <!-- Modal de envío de mensaje a algún miembro de la Organizacion -->
         <div class="modal fade" id="modalNuevoMensajeOrganizacion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalNuevoMensajeOrganizacion" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje a algún miembro de tu organizacion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Envía un mensaje a algún miembro de tu organizacion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="/mensajes/enviarOrganizacion">
+                            <div class="form-group">
+                                <label for="emailDestinatarioOrganizacion" class="col-form-label">Destinatario:</label>
+                                <select class="form-select" id="emailDestinatarioOrganizacion" name="emailDestinatarioOrganizacion" required>
+                                    <option value="" selected>Selecciona un destinatario</option>
+                                    <% datos.usuariosOrganizacion.forEach(function(usuario) { %>
+                                        <option value="<%= usuario.email %>"><%= usuario.email %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="asuntoOrganizacion" class="col-form-label">Asunto:</label>
+                                <input type="text" class="form-control" id="asuntoOrganizacion" name="asuntoOrganizacion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensajeOrganizacion" class="col-form-label">Mensaje:</label>
+                                <textarea class="form-control" rows="5" id="mensajeOrganizacion" name="mensajeOrganizacion" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Enviar mensaje</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form>
-                      <div class="form-group">
-                        <label for="nombreDestinatarioOrganizacion" class="col-form-label">Destinatario:</label>
-                        <select class="form-select" id="nombreDestinatarioOrganizacion" name="nombreDestinatarioOrganizacion" required>
-                            <option value="" selected>Selecciona un destinatario</option>
-                            <% datos.usuariosOrganizacion.forEach(function(usuario) { %>
-                                <option value="<%= usuario.email %>"><%= usuario.email %></option>
-                            <% }) %>
-                        </select>
-
-                        <label for="asuntoOrganizacion" class="col-form-label">Asunto:</label>
-                        <input type="text" class="form-control" id="asuntoOrganizacion" name="asuntoOrganizacion" required>
-
-                        <label for="mensajeOrganizacion" class="col-form-label">Mensaje:</label>
-                        <textarea class="form-control" rows="5" id="mensajeOrganizacion" name="mensajeOrganizacion" required></textarea>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
-                  </div>
-                </form>
-            </div>
             </div>
         </div>
 
