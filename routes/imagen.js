@@ -5,7 +5,7 @@ const DAOImagen = require("../database/DAOImagen");
 const daoImagen = new DAOImagen();
 const router = Router();
 
-router.get("/instalacion/:id", (req, res, next) => {
+router.get("/instalacion/:id",  (req, res, next) => {
   const id = Number(req.params.id);
   if (isNaN(id)) {
     const error = new Error("Petición incorrecta");
@@ -23,7 +23,7 @@ router.get("/instalacion/:id", (req, res, next) => {
   }
 });
 
-router.get("/usuario/:id", (req, res, next) => {
+router.get("/usuario/:id",  (req, res, next) => {
     const id = Number(req.params.id);
     if (isNaN(id)) {
       const error = new Error("Petición incorrecta");

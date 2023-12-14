@@ -4,9 +4,9 @@ const daoMensajes = new DAOMensajes();
 const DAOUsuario = require('../database/DAOUsuario')
 const daoUsuario = new DAOUsuario();
 const router = Router();
+const { verificarAutenticacion} = require('../middlewares/acceso');
 
-//Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
-router.get("/:id", function(req, res, next) {
+router.get("/:id", verificarAutenticacion, function(req, res, next) {
   datos = {};
   const id = Number(req.params.id);
   if (isNaN(id)) {

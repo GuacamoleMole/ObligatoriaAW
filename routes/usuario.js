@@ -16,6 +16,7 @@ const daoInstalaciones = new DAOInstalaciones();
 const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
 const upload = multer({ storage: storage });
 const router = Router();
+const { verificarAutenticacion, soloAdmin } = require('../middlewares/acceso');
 
 //Ruta inicio de sesión
 router.get("/login", function (req, res) {
@@ -169,7 +170,7 @@ router.delete("/logout", function (req, res, next) {
 });
 
 // Ruta para mostrar la página de usuario con EJS
-router.get("/:id", (req, res, next) => {
+router.get("/:id", verificarAutenticacion, (req, res, next) => {
   let datos = {};
   const id = Number(req.params.id);
   if (isNaN(id)) {
@@ -208,7 +209,7 @@ router.get("/:id", (req, res, next) => {
   });
 });
 
-router.get("/admin/pendientes", (req, res, next) => {
+router.get("/admin/pendientes", verificarAutenticacion, soloAdmin, (req, res, next) => {
   let datos = {};
   daoUsuario.buscarNoValidados((err, usuarios) => {
     if (err) next(err);
@@ -238,7 +239,7 @@ router.put("/admin/validar/:id", (req, res, next) => {
   });
 });
 
-router.get("/admin/hacerAdmin", (req, res, next) => {
+router.get("/admin/hacerAdmin", verificarAutenticacion, soloAdmin,(req, res, next) => {
   let datos = {};
   //Ademas de ser usuario, tiene que estar validado
   //Esto lo comprueba ya la query de la BBDD
@@ -270,7 +271,7 @@ router.put("/admin/hacerAdmin/:id", (req, res, next) => {
   });
 });
 
-router.get("/admin/crearInstalacion", (req, res, next) => {
+router.get("/admin/crearInstalacion",verificarAutenticacion, soloAdmin, (req, res, next) => {
   let datos = {};
 
   if (req.session.user !== undefined) {
@@ -281,7 +282,7 @@ router.get("/admin/crearInstalacion", (req, res, next) => {
   res.render("crearInstalacion", { datos, errores: {} });
 });
 
-router.get("/admin/configuracionSistema", (req, res, next) => {
+router.get("/admin/configuracionSistema",verificarAutenticacion, soloAdmin, (req, res, next) => {
   let datos = {};
 
   if (req.session.user !== undefined) {
@@ -336,7 +337,7 @@ router.post(
   }
 );
 
-router.get("/admin/historialReservas", (req, res, next) => {
+router.get("/admin/historialReservas", verificarAutenticacion, soloAdmin,(req, res, next) => {
   let datos = {};
 
   if (req.session.user !== undefined) {
@@ -365,7 +366,7 @@ router.get("/admin/historialReservas", (req, res, next) => {
   });
 });
 
-router.get("/admin/listarUsuarios", (req, res, next) => {
+router.get("/admin/listarUsuarios", verificarAutenticacion, soloAdmin,(req, res, next) => {
   let datos = {};
 
   if (req.session.user !== undefined) {
