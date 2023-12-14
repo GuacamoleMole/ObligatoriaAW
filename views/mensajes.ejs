@@ -17,31 +17,37 @@
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
         <!-- Estos datos serán tomados de la base de datos y recibidos como parámetros -->
         <div class="container mt-5">
-            <h1>Mensajes <%= datos.id %></h1>
-            <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeFacultad" >+ Mensaje a la Facultad</button>
-            <% if (datos.session.rol === "admin") { %>
-                <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeOrganizacion">+ Mensaje a la Organización</button>
-            <% } %>
-
-            <% if (datos.mensajes.length === 0) { %>
-                <div class="alert alert-info" role="alert">
-                    No tienes ningún mensaje
+            <h1>Bandeja de mensajes</h1>
+            <% if (datos.session.validado === 0) { %> 
+                <div class="alert alert-warning" role="alert">
+                    <p>Para poder enviar mensajes a otros usuarios, debes esperar a que un administrador valide tu cuenta.</p>
                 </div>
             <% } else { %>
-                <% datos.mensajes.forEach(function (mensaje) { %>
-                    <div class="mensajeContainer">
-                        <div class="row headerMensaje">
-                            <span><%= mensaje.nombre %> <%= mensaje.apellidos %></span>
-                            <p class="emailMensaje"><%= mensaje.email %></p>
-                        </div>
-                        <div class="row asuntoMensaje">
-                            <p><%= mensaje.asunto %></p>
-                        </div>
-                        <div class=" row contenidoMensaje">
-                            <p><%= mensaje.contenido %></p>
-                        </div>
+                <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeFacultad" >+ Mensaje a la Facultad</button>
+                <% if (datos.session.rol === "admin") { %>
+                    <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#modalNuevoMensajeOrganizacion">+ Mensaje a la Organización</button>
+                <% } %>
+                
+                <% if (datos.mensajes.length === 0) { %>
+                    <div class="alert alert-info" role="alert">
+                        No tienes ningún mensaje
                     </div>
-                <% }); %>
+                <% } else { %>
+                    <% datos.mensajes.forEach(function (mensaje) { %>
+                        <div class="mensajeContainer">
+                            <div class="row headerMensaje">
+                                <span><%= mensaje.nombre %> <%= mensaje.apellidos %></span>
+                                <p class="emailMensaje"><%= mensaje.email %></p>
+                            </div>
+                            <div class="row asuntoMensaje">
+                                <p><%= mensaje.asunto %></p>
+                            </div>
+                            <div class=" row contenidoMensaje">
+                                <p><%= mensaje.contenido %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } %>
             <% } %>
         </div>
 
