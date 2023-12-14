@@ -54,8 +54,8 @@
                 </div>
             </div>
             
-            <% if(datos.rol === 'admin' && datos.session !== undefined) { %>
                 <div class="row">
+                    <% if(datos.rol === 'admin' && datos.session !== undefined && datos.email === datos.session.email) { %>
                     <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
                         <a href="/usuario/admin/pendientes" class="btn btn-primary p-3 botonAccionAdmin">Usuarios a Validar</a>
                     </div>
@@ -74,11 +74,13 @@
                     <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
                         <a href="/usuario/admin/listarUsuarios" class="btn btn-primary pt-4 botonAccionAdmin">Lista de Usuarios</a>
                     </div>
+                    <% }; %>
+                    <% if (datos.session !== undefined && datos.email === datos.session.email) { %>
+                        <div class="col-sm-6 col-md-3 col-lg-2 text-center mb-3">
+                            <a href="/usuario/<%=datos.id%>/reservas" class="btn btn-primary pt-4 botonAccionAdmin">Ver mis reservas</a>
+                        </div>
+                    <% }; %>
                 </div>
-
-    
-            <% }; %>
-
         </div>
 
         <%- include("footer", {conf: datos.conf}) %>

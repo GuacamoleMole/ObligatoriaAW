@@ -212,6 +212,35 @@ router.get("/:id", verificarAutenticacion, (req, res, next) => {
   });
 });
 
+router.get("/:id/reservas", verificarAutenticacion, (req, res, next) => {
+  let datos = {};
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
+  datos.id = id;
+
+  daoReservas.obtenerTodaInformacionReservasPorID(id, (err, reservas) => {
+    if (err) {
+      next(err);
+    } else {
+      datos.reservas = reservas;
+      for (let i = 0; i < datos.reservas.length; i++) {
+        datos.reservas[i].fecha = new Date(
+          datos.reservas[i].fecha
+        ).toLocaleDateString();
+      }
+      if (req.session.user !== undefined) {
+        datos.session = req.session.user;
+      }
+      datos.conf = req.app.locals.configuracion;
+      res.render("misReservas", { datos });
+    }
+  });
+});
+
 router.get("/admin/pendientes", verificarAutenticacion, soloAdmin, (req, res, next) => {
   let datos = {};
   daoUsuario.buscarNoValidados((err, usuarios) => {

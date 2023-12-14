@@ -201,6 +201,10 @@ Estilos de la página de mensajes
   border-radius: 1rem 1rem 0 0;
 }
 
+.headerReserva {
+  border-radius: 1rem;
+}
+
 .contenidoMensaje {
   border: 1px solid #7e10a3;
   border-top: none;

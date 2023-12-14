@@ -67,6 +67,26 @@ class DAOReservas {
     });
   }
 
+  obtenerTodaInformacionReservasPorID(id, callback) {
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(reservasQueries.obtenerTodaInformacionReservasPorID,
+          [id],
+          function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data);
+          }
+        });
+      }
+    });
+  }
+
   terminarConexion(callback) {
     this.pool.end();
   }
