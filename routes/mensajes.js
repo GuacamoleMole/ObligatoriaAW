@@ -24,7 +24,6 @@ router.get("/:id", function(req, res, next) {
           next();
       } else {
           datos.mensajes = mensajes;
-          console.log(datos.mensajes);
       }
 
       daoUsuario.buscarValidados((err, usuarios) => {

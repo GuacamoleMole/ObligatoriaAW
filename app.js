@@ -39,9 +39,7 @@ app.use((req, res, next) => {
   // Llamada a buscarConf para obtener la configuración
   daoConfiguracion.buscarConf((err, configuracion) => {
     if (err) {
-      const error = new Error("Página no encontrada");
-      error.status = 404;
-      next(error);
+      next(err);
     } else {
       // Almacena la configuración en req.app.locals para que esté disponible en todas las rutas
       req.app.locals.configuracion = configuracion;
@@ -71,7 +69,6 @@ app.get("/", function(req, res, next) {
       }
       datos.instalaciones = instalaciones;
       datos.conf = req.app.locals.configuracion
-      console.log(datos.conf)
       res.render("index", {datos});
     }
   });
@@ -89,7 +86,6 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
   // Código 500: Internal server error
   res.status(error.status || 500);
-  console.log(error);
   res.render("error", {
     status : error.status,
     mensaje: error.message,

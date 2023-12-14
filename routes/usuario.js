@@ -20,7 +20,12 @@ const router = Router();
 //Ruta inicio de sesión
 router.get("/login", function (req, res) {
   res.status(200);
-  res.render("login", { errores: {} });
+  let datos = {};
+  datos.conf = req.app.locals.configuracion
+  if (req.session.user !== undefined) {
+    datos.session = req.session.user;
+  }
+  res.render("login", { datos, errores: {} });
 });
 
 router.post(
@@ -70,7 +75,12 @@ router.post(
 //Ruta de registro
 router.get("/registro", function (req, res) {
   res.status(200);
-  res.render("registroUsuario", { errores: {} });
+  let datos = {};
+  datos.conf = req.app.locals.configuracion
+  if (req.session.user !== undefined) {
+    datos.session = req.session.user;
+  }
+  res.render("registroUsuario", { datos, errores: {} });
 });
 
 // Ruta de registro (POST)

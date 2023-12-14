@@ -27,8 +27,6 @@ $(document).ready(function () {
                 $(this).parent().show(); // Enseñar el resultado si coincide
             } else {
                 // Si no coincide, escondemos a su padre para que se muestren en orden
-                console.log(fechaFilter);
-                console.log(fecha);
                 $(this).parent().hide(); // Esconder el resultado si no coincide
             }
         });
