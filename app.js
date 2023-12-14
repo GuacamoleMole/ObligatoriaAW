@@ -39,7 +39,9 @@ app.use((req, res, next) => {
   // Llamada a buscarConf para obtener la configuración
   daoConfiguracion.buscarConf((err, configuracion) => {
     if (err) {
-      console.error('Error al buscar la configuración:', err);
+      const error = new Error("Página no encontrada");
+      error.status = 404;
+      next(error);
     } else {
       // Almacena la configuración en req.app.locals para que esté disponible en todas las rutas
       req.app.locals.configuracion = configuracion;
