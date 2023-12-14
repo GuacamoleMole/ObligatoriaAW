@@ -17,6 +17,8 @@ const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lug
 const upload = multer({ storage: storage });
 const router = Router();
 const { verificarAutenticacion, soloAdmin } = require('../middlewares/acceso');
+const DAOMensajes = require("../database/DAOMensajes");
+const daoMensajes = new DAOMensajes();
 
 //Ruta inicio de sesión
 router.get("/login", function (req, res) {
@@ -234,7 +236,22 @@ router.put("/admin/validar/:id", (req, res, next) => {
   daoUsuario.validarUsuario(id, (err) => {
     if (err) next(err);
     else {
-      res.send(`ID:${id} validado`);
+      console.log(id);
+      const idOrigen = req.session.user.id;
+      const idDestino = id;
+      const asunto = "Bienvenido/a";
+      const mensaje = "¡Bienvenido/a a la aplicación! Ahora podrás ver y enviar tus mensajes, así como hacer reservas en las distintas instalaciones.";
+      daoMensajes.enviarMensaje({ idOrigen, idDestino, mensaje, asunto }, (err, idM) => {
+        if (err) {
+          console.log("hubo error");
+          console.log(err);
+          next(err);
+        }
+        else {
+          console.log("mensaje enviado");
+          res.send(`ID:${id} ahora es validado`);
+        }
+      });
     }
   });
 });
