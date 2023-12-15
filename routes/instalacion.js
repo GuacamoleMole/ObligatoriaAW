@@ -9,34 +9,6 @@ const { body, check, validationResult } = require("express-validator");
 const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
 const upload = multer({ storage: storage });
 
-
-//Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
-router.get("/:id", function(req, res, next) {
-  const id = Number(req.params.id);
-  if (isNaN(id)) {
-    const error = new Error("Petición incorrecta");
-    error.status = 404;
-    next(error);
-  }
-  daoInstalaciones.buscarPorId(id, (err,inst) =>{
-    if(err){
-      next(err);
-    } else{
-      //Si no existe el destino URL va a el middleware de rutas no encontrada
-      if(inst === undefined)
-        next();
-      let datos = {};
-      if(req.session.user !== undefined){
-        datos.session = req.session.user;
-      }
-      datos.conf = req.app.locals.configuracion
-      datos.inst = inst;
-      datos.idInstalacion = id;
-      res.render("instalacion", {datos, errores: {}, exitoReserva: false});
-    }
-  });  
-});
-
 router.post(
   "/crear", 
   upload.single('imagenInstalacion'),
@@ -104,5 +76,35 @@ router.post(
       }
     })
 });
+
+
+//Ruta página instalación, donde se muestra la instalación en detalle y se permite reservarla
+router.get("/:id", function(req, res, next) {
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    const error = new Error("Petición incorrecta");
+    error.status = 404;
+    next(error);
+  }
+  daoInstalaciones.buscarPorId(id, (err,inst) =>{
+    if(err){
+      next(err);
+    } else{
+      //Si no existe el destino URL va a el middleware de rutas no encontrada
+      if(inst === undefined)
+        next();
+      let datos = {};
+      if(req.session.user !== undefined){
+        datos.session = req.session.user;
+      }
+      datos.conf = req.app.locals.configuracion
+      datos.inst = inst;
+      datos.idInstalacion = id;
+      res.render("instalacion", {datos, errores: {}, exitoReserva: false});
+    }
+  });  
+});
+
+
 
 module.exports = router;

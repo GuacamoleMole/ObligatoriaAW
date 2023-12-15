@@ -81,4 +81,41 @@ router.post(
         });  
       });
 
+router.get("/busqueda",  (req,res,next) =>{
+  const filtros = req.query;
+  console.log('Filtros recibidos:', filtros);
+  let sql = `
+    SELECT USU.nombre, USU.apellidos, USU.email, INS.nombre, RES.fecha, USU.facultad, RES.hora_inicio, RES.hora_fin 
+    FROM UCM_AW_RIU_RES_Reservas RES
+    JOIN UCM_AW_RIU_INS_Instalaciones INS ON RES.id_instalacion = INS.id
+    JOIN UCM_AW_RIU_USU_Usuarios USU ON RES.id_usuario = USU.id
+    WHERE 1=1`;
+  if(filtros.facultad !== 'todos'){
+    sql += ` AND USU.facultad = '${filtros.facultad}'`;
+  }
+  if (filtros.instalacion !== 'todas')
+  {
+    sql += ` AND INS.nombre = '${filtros.instalacion}'`;
+  }
+  if(filtros.email !== undefined)
+  {
+    sql += ` AND USU.email = '${filtros.email}'`;
+
+  }
+  if(filtros.horaInicio !== undefined)
+  {
+    sql += ` AND RES.hora_inicio = TIME('${filtros.horaInicio}')`;
+  }
+  if(filtros.horaFin !== undefined)
+  {
+    sql += ` AND RES.hora_fin = TIME('${filtros.horaFin}')`;
+  }
+  if(filtros.fecha !== undefined)
+  {
+    sql += ` AND RES.fecha = '${filtros.fecha}'`;
+  }
+  console.log('Consulta SQL:', sql);
+  res.send('¡Datos recibidos con éxito!');
+});
+
 module.exports = router;
