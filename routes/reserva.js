@@ -5,6 +5,7 @@ const daoReservas = new DAOReservas();
 const DAOInstalaciones = require('../database/DAOInstalaciones')
 const daoInstalaciones = new DAOInstalaciones();
 const router = Router();
+const { verificarAutenticacion, soloAdmin } = require('../middlewares/acceso');
 
 router.post(
     "/crear",
@@ -81,7 +82,7 @@ router.post(
         });  
       });
 
-router.get("/busqueda",  (req,res,next) =>{
+router.get("/busqueda", verificarAutenticacion, soloAdmin, (req,res,next) =>{
   const filtros = req.query;
   let sql = `
     SELECT USU.nombre, USU.apellidos, USU.email, INS.nombre AS instalacion, RES.fecha, USU.facultad, RES.hora_inicio, RES.hora_fin 

@@ -4,6 +4,7 @@ $(document).ready(function () {
 
         $.ajax({
             url: "/usuario/logout", 
+            type: 'DELETE',
             success: function (data) {
                 console.log("Logout exitoso");
                 window.location.href = "/";
