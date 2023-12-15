@@ -83,9 +83,8 @@ router.post(
 
 router.get("/busqueda",  (req,res,next) =>{
   const filtros = req.query;
-  console.log('Filtros recibidos:', filtros);
   let sql = `
-    SELECT USU.nombre, USU.apellidos, USU.email, INS.nombre, RES.fecha, USU.facultad, RES.hora_inicio, RES.hora_fin 
+    SELECT USU.nombre, USU.apellidos, USU.email, INS.nombre AS instalacion, RES.fecha, USU.facultad, RES.hora_inicio, RES.hora_fin 
     FROM UCM_AW_RIU_RES_Reservas RES
     JOIN UCM_AW_RIU_INS_Instalaciones INS ON RES.id_instalacion = INS.id
     JOIN UCM_AW_RIU_USU_Usuarios USU ON RES.id_usuario = USU.id
@@ -114,8 +113,20 @@ router.get("/busqueda",  (req,res,next) =>{
   {
     sql += ` AND RES.fecha = '${filtros.fecha}'`;
   }
-  console.log('Consulta SQL:', sql);
-  res.send('¡Datos recibidos con éxito!');
+  let datos = {};
+  daoReservas.busquedaAvanzada(sql, (err, result) =>{
+    if(err){
+      next(err);
+    }else{
+      datos.reservas = result;
+      for (let i = 0; i < datos.reservas.length; i++) {
+        datos.reservas[i].fecha = new Date(
+          datos.reservas[i].fecha
+        ).toLocaleDateString();
+      }
+      res.render("busquedaReservas", { datos });
+    }
+  });
 });
 
 module.exports = router;

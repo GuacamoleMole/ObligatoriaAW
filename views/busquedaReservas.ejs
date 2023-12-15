@@ -1,0 +1,38 @@
+<% datos.reservas.forEach(function(reserva) { %>
+    <div class="col-md-12 text-center mb-3">
+        <div class="resultadoBusqueda resultadoHistorial">
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Nombre: </span><span class="campoUsuarioNombre"><%= reserva.nombre %></span></span>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Apellidos: </span><span class="campoUsuarioApellidos"><%= reserva.apellidos %></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Email: </span><span class="campoUsuarioEmail"><%= reserva.email %></span></span>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Instalación: </span><span class="campoUsuarioInstalacion"><%= reserva.instalacion %></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Fecha: </span><span class="campoUsuarioFecha"><%= reserva.fecha %></span></span>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Facultad: </span>Facultad de <span class="campoUsuarioFacultad"><%= reserva.facultad %></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Hora Inicio: </span><span class="campoUsuarioHoraInicio"><%= reserva.hora_inicio.slice(0, 5) %></span></span>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Hora Fin: </span><span class="campoUsuarioHoraFin"><%= reserva.hora_fin.slice(0, 5) %></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+<% }) %>
