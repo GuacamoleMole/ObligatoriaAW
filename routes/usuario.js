@@ -177,6 +177,7 @@ router.post(
 router.delete("/logout", function (req, res, next) {
   req.session.destroy(function (err) {
     if (!err) {
+      res.send("Log Out!");
       res.redirect("/");
     } else next(err);
   });

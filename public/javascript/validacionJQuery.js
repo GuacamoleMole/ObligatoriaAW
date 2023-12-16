@@ -9,6 +9,8 @@ $(document).ready(() => {
     const errorEmail = $('#errorEmail');
     const errorContrasena = $('#errorContrasena');
 
+    const botonMostrarContrasena = $('#mostrarContrasena');
+
     campoNombre.on('change', () => {
         let valor = campoNombre.val();
 
@@ -55,6 +57,14 @@ $(document).ready(() => {
             errorContrasena.text('El campo contraseña no puede estar vacío');
         } else {
             errorNombre.text('');
+        }
+    })
+
+    botonMostrarContrasena.on('click', () => {
+        if (campoContrasena.attr('type') === 'password') {
+            campoContrasena.attr('type', 'text');
+        } else {
+            campoContrasena.attr('type', 'password');
         }
     })
 });

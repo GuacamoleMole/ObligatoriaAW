@@ -68,6 +68,10 @@ Estilos de la página de registro
   }
 }
 
+.labelMostrarContrasena {
+  font-size: .9rem;
+}
+
 .campoIncorrecto {
   color: red;
   font-size: 0.8rem;
