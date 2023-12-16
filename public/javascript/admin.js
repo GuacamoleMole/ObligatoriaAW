@@ -20,13 +20,16 @@ $(document).ready(function() {
             }
         });
     });
-});
 
-$(document).ready(function() {
+    $('.btnIdHacerAdmin').on('click', function() {
+        const userId = $(this).data('userid');
+        // Asignar el userId al modal
+        $('#modalConfirmar').data('userid', userId);
+    });
 
     // Manejar el clic en el botón de validar
     $('.btn-hacerAdmin').on('click', function() {
-        const userId = $(this).data('userid');  // Obtener el ID del usuario desde el atributo data-userid
+        const userId = $('#modalConfirmar').data('userid');
         const url = `/usuario/admin/hacerAdmin/${userId}`;
 
         // Realizar la llamada AJAX con jQuery
@@ -44,4 +47,5 @@ $(document).ready(function() {
             }
         });
     });
+
 });

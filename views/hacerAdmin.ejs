@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
     </head>
     <body>
         <%- include("header", {ses: datos.session}) %> <!-- subplantilla -->
@@ -24,10 +25,28 @@
                     <span> <%= usuario.nombre + " " %> <%= usuario.apellidos %> </span>
                     <p class="emailMensaje"> <%= usuario.email %> </p>
                     <!-- TODO: intentar modal de confirmación -->
-                    <button class="btn btn-primary btn-hacerAdmin" data-userID="<%= usuario.id %>">Hacer Admin</button>
+                    <button class="btn btn-primary btnIdHacerAdmin" data-bs-toggle="modal" data-userID="<%= usuario.id %>" data-bs-target="#modalConfirmar" >Hacer Admin</button>
+
                 </div>
             </div>
             <% }); %>
+        </div>
+
+        <!-- Modal confirmacion hacer Admin -->
+        <div class="modal fade" id="modalConfirmar" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalConfirmar" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Botón para hacer admin -->
+                        <button type="button" class="btn btn-success btn-hacerAdmin"  id="btnHacerAdmin">Hacer Admin</button>
+                        <!-- Botón para cerrar el modal sin hacer admin -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <%- include("footer", {conf: datos.conf}) %>
