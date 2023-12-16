@@ -205,6 +205,10 @@ Estilos de la página de mensajes
   border-radius: 1rem;
 }
 
+.datosReserva {
+  font-weight: 500;
+}
+
 .contenidoMensaje {
   border: 1px solid #7e10a3;
   border-top: none;
@@ -233,7 +237,7 @@ Estilos de la lista de usuarios
   border-radius: .5rem;
   height: 11rem;
   padding: .5rem;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .resultadoHistorial {

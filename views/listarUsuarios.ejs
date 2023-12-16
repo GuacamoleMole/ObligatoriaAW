@@ -50,7 +50,7 @@
                     <option value="Veterinaria">Facultad de Veterinaria</option>
                 </select>
             </div>
-            <div class="row mb-3">
+            <div class="row">
                 <!-- Campo Nombre -->
                 <div class="col-md-6 mb-3">
                 <label for="nombre" class="form-label">Nombre:</label>
@@ -63,9 +63,17 @@
                 <input type="text" class="form-control" id="apellidos" name="apellidos" required>
                 </div>
             </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" id="buscarBtn">Buscar</button>
+            </div>
 
             <h2>Resultados</h2>
-            <div class="row">
+            <div class="row" id="resultadosBusqueda">
+                <% if (datos.usuarios.length === 0) { %>
+                    <div class="alert alert-info" role="alert">
+                        No se han encontrado usuarios
+                    </div>
+                <% } %>
                 <% datos.usuarios.forEach(function(usuario) { %>
                     <div class="col-md-6 text-center mb-3">
                         <div class="resultadoBusqueda">

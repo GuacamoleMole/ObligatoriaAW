@@ -172,6 +172,42 @@ router.delete("/logout", function (req, res, next) {
   });
 });
 
+router.get("/busqueda", verificarAutenticacion, soloAdmin, (req,res,next) =>{
+  const filtros = req.query;
+  let sql = `
+    SELECT nombre, apellidos, email, facultad
+    FROM UCM_AW_RIU_USU_Usuarios
+    WHERE 1=1`;
+  if(filtros.facultad !== 'todos') {
+    sql += ` AND facultad = '${filtros.facultad}'`;
+  }
+  if(filtros.email !== undefined) {
+    sql += ` AND email LIKE '%${filtros.email}%'`;
+  }
+
+  if(filtros.nombre !== undefined) {
+    sql += ` AND nombre LIKE '%${filtros.nombre}%'`;
+  }
+
+  if(filtros.apellidos !== undefined) {
+    sql += ` AND apellidos LIKE '%${filtros.apellidos}%'`;
+  }
+  let datos = {};
+  daoUsuario.busquedaAvanzada(sql, (err, result) =>{
+    if(err) {
+      next(err);
+    }else {
+      datos.usuarios = result;
+      for (let i = 0; i < datos.usuarios.length; i++) {
+        datos.usuarios[i].fecha = new Date(
+          datos.usuarios[i].fecha
+        ).toLocaleDateString();
+      }
+      res.render("busquedaUsuarios", { datos });
+    }
+  });
+});
+
 // Ruta para mostrar la página de usuario con EJS
 router.get("/:id", verificarAutenticacion, (req, res, next) => {
   let datos = {};

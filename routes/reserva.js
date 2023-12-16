@@ -99,8 +99,7 @@ router.get("/busqueda", verificarAutenticacion, soloAdmin, (req,res,next) =>{
   }
   if(filtros.email !== undefined)
   {
-    sql += ` AND USU.email = '${filtros.email}'`;
-
+    sql += ` AND USU.email LIKE '%${filtros.email}%'`;
   }
   if(filtros.horaInicio !== undefined)
   {

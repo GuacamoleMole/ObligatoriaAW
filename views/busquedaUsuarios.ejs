@@ -1,0 +1,31 @@
+<% if (datos.usuarios.length === 0) { %>
+    <div class="alert alert-info" role="alert">
+        No se han encontrado usuarios que correspondan con los filtros
+    </div>
+<% } %>
+
+<% datos.usuarios.forEach(function(usuario) { %>
+    <div class="col-md-6 text-center mb-3">
+        <div class="resultadoBusqueda">
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Nombre: </span><span class="campoUsuarioNombre"><%= usuario.nombre %></span></span>
+                </div>
+                <div class="col-md-6 mb-1">
+                    <span><span class="campoUsuario">Apellidos: </span><span class="campoUsuarioApellidos"><%= usuario.apellidos %></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-1">
+                    <span><span class="campoUsuario">Facultad: </span>Facultad de <span class="campoUsuarioFacultad"><%= usuario.facultad %></span></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-1">
+                    <span><span class="campoUsuario">Correo: </span><%= usuario.email %></span>
+                </div>
+            </div>
+            <a href="/usuario/<%= usuario.id %>" class="btn btn-primary">Visitar perfil</a>
+        </div>
+    </div>
+<% }) %>

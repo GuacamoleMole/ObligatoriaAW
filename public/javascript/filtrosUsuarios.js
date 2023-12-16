@@ -1,28 +1,41 @@
 $(document).ready(function () {
-    // Función para filtrar dependiendo de nombre y apellidos
-    function filterResults() {
-        let nombreFilter = $('#nombre').val().toLowerCase();
-        let apellidosFilter = $('#apellidos').val().toLowerCase();
-        let facultadFilter = $('#facultad').val().toLowerCase();
-
-        $('.resultadoBusqueda').each(function () {
-            let nombre = $(this).find('.campoUsuarioNombre').text().toLowerCase();
-            let apellidos = $(this).find('.campoUsuarioApellidos').text().toLowerCase();
-            let facultad = $(this).find('.campoUsuarioFacultad').text().toLowerCase();
-
-            // Comprobar si el item actual coincide con los criterios de filtrado
-            if ((nombre.indexOf(nombreFilter) > -1 || nombreFilter === '') &&
-                (apellidos.indexOf(apellidosFilter) > -1 || apellidosFilter === '') &&
-                (facultad.indexOf(facultadFilter) > -1 || facultadFilter === '' || facultadFilter === 'todos')) {
-                $(this).parent().show(); // Enseñar el resultado si coincide
-            } else {
-                // Si no coincide, escondemos a su padre para que se muestren en orden
-                $(this).parent().hide(); // Esconder el resultado si no coincide
+    $('#buscarBtn').on('click', function() {
+        let filtros = {};
+        $('.form-control').each(function(index, element) {
+            const valor = $(element).val(); // Obtiene el valor del campo
+    
+            // Verifica si el campo tiene algún valor
+            if (valor !== '') {
+                let etiqueta = $(element).attr('id');
+                filtros[etiqueta] = valor; // Agrega al objeto JSON
+            }
+        }); 
+        $('.form-select').each(function(index, element) {
+            const valorSeleccionado = $(element).val();
+            if (valorSeleccionado !== null && valorSeleccionado !== '') {
+                let etiqueta = $(element).attr('id');
+                const valorOptionSeleccionado = $(element).find('option:selected').val();
+                filtros[etiqueta] = valorOptionSeleccionado; // Agrega al objeto JSON
+            }
+        }); 
+    
+        // Enviar la petición AJAX
+        $.ajax({
+            url: '/usuario/busqueda',
+            type: 'GET',
+            data: filtros,
+            success: function(response) {
+                // Limpiar el contenido actual de resultados
+                 $('#resultadosBusqueda').empty();
+    
+                // Agregar el nuevo contenido
+                $('#resultadosBusqueda').append(response);
+            },
+            error: function(error) {
+                // Manejar errores aquí
+                console.error('Error en la solicitud AJAX:', error);
             }
         });
-    }
-
-    // Añadimos el evento de filtrado a los campos de búsqueda
-    $('#nombre, #apellidos').on('input', filterResults);
-    $('#facultad').on('change', filterResults);
+    
+    });
 });

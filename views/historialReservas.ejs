@@ -81,17 +81,22 @@
 
             <div class="row mb-3">
                 <!-- Campo Fecha -->
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6">
                     <label for="fecha" class="form-label">Fecha:</label>
                     <input type="date" class="form-control" id="fecha" name="fecha" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <button class="btn btn-success" id="buscarBtn">Buscar</button>
-                </div>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" id="buscarBtn">Buscar</button>
             </div>
 
             <h2>Resultados</h2>
             <div class="row" id = "resultadosBusqueda">
+                <% if (datos.reservas.length === 0) { %>
+                    <div class="alert alert-info" role="alert">
+                        No se han encontrado reservas
+                    </div>
+                <% } %>
                 <% datos.reservas.forEach(function(reserva) { %>
                     <div class="col-md-12 text-center mb-3">
                         <div class="resultadoBusqueda resultadoHistorial">

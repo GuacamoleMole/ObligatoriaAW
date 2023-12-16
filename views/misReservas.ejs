@@ -24,11 +24,11 @@
                 <% datos.reservas.forEach(function (reserva) { %>
                     <div class="mensajeContainer">
                         <div class="headerMensaje headerReserva ps-4 pb-3">
-                            <span>Instalación: <%= reserva.nombre %></span>
+                            <span>Instalación: <span class="datosReserva"><%= reserva.nombre %></span></span>
                             <div class="row">
-                                <div class="col-md-6">Fecha: <%= reserva.fecha %></div>
-                                <div class="col-md-3">Hora inicio: <%= reserva.hora_inicio.slice(0, 5) %></div>
-                                <div class="col-md-3">Hora fin: <%= reserva.hora_fin.slice(0, 5) %></div>
+                                <div class="col-md-6">Fecha: <span class="datosReserva"><%= reserva.fecha %></span></div>
+                                <div class="col-md-3">Hora inicio: <span class="datosReserva"><%= reserva.hora_inicio.slice(0, 5) %></span></div>
+                                <div class="col-md-3">Hora fin: <span class="datosReserva"><%= reserva.hora_fin.slice(0, 5) %></span></div>
                             </div>
                         </div>
                     </div>

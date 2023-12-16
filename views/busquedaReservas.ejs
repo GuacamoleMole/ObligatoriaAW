@@ -1,3 +1,8 @@
+<% if (datos.reservas.length === 0) { %>
+    <div class="alert alert-info" role="alert">
+        No hay reservas que coincidan con los criterios de búsqueda
+    </div>
+<% } %>
 <% datos.reservas.forEach(function(reserva) { %>
     <div class="col-md-12 text-center mb-3">
         <div class="resultadoBusqueda resultadoHistorial">

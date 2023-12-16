@@ -185,6 +185,26 @@ class DAOUsuario {
       }
     });
   }
+
+  //Pasamos la query por parametro ya que esta es dinámica
+  busquedaAvanzada(query, callback){
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(query, function (err, rows) {
+          connection.release();
+          if (err) {
+            callback(err, null);
+          } else {
+            let data = JSON.parse(JSON.stringify(rows));
+            callback(null, data); //devolvemos todo
+          }
+        });
+      }
+    });
+  }
+
   terminarConexion(callback) {
     this.pool.end();
   }
