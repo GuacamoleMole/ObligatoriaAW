@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <!-- Formulario para ver formulario reserva -->
-                <% if(datos.session !== undefined) {%>
+                <% if(datos.session !== undefined && datos.session.validado) {%>
                     <% if (errores.length > 0) { %>
                         <div class="alert alert-danger" role="alert">
                             La información introducida no es correcta:
@@ -78,7 +78,13 @@
                         </form>
                     </div>
                 <% } else { %>
-                <a href="/usuario/login" class="btn btn-primary">Inicie sesión para reservar</a>
+                    <%  if(datos.session === undefined) {%>
+                        <a href="/usuario/login" class="btn btn-primary">Inicie sesión para reservar</a>
+                    <%  } else if(!datos.session.validado) { %>
+                        <div class="alert alert-warning" role="alert">
+                            <p>Para poder reserva una instalación debes esperar a que un administrador valide tu cuenta.</p>
+                        </div>
+                    <% }; %>
                 <% }; %>
             </div>
         </div>

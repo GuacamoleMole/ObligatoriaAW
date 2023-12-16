@@ -9,6 +9,7 @@ const path = require('path');
 const session = require('express-session');
 const mysqlSession = require("express-mysql-session"); 
 const morgan = require('morgan');
+const { actualizarSession } = require('./middlewares/acceso');
 
 const MySQLStore = mysqlSession(session);
 const sessionStore = new MySQLStore(conf.connection);
@@ -57,7 +58,7 @@ app.use('/imagen', require('./routes/imagen'));
 
 
 //Ruta página principal, en la que se muestran las instalaciones a reservar
-app.get("/", function(req, res, next) {
+app.get("/", actualizarSession, function(req, res, next) {
 
   daoInstalaciones.buscarTodasInstalaciones((err, instalaciones) =>{
     if(err){

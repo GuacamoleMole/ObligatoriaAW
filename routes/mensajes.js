@@ -4,9 +4,9 @@ const daoMensajes = new DAOMensajes();
 const DAOUsuario = require('../database/DAOUsuario')
 const daoUsuario = new DAOUsuario();
 const router = Router();
-const { verificarAutenticacion} = require('../middlewares/acceso');
+const { verificarAutenticacion,actualizarSession} = require('../middlewares/acceso');
 
-router.get("/:id", verificarAutenticacion, function(req, res, next) {
+router.get("/:id", verificarAutenticacion, actualizarSession, function(req, res, next) {
   datos = {};
   const id = Number(req.params.id);
   if (isNaN(id)) {
