@@ -22,7 +22,7 @@ $(document).ready(() => {
     })
 
     campoApellidos.on('change', () => {
-        let valor = campoNombre.val();
+        let valor = campoApellidos.val();
 
         if (valor === "") {
             errorApellidos.text('El campo apellidos no puede estar vacío');

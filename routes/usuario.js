@@ -38,9 +38,15 @@ router.post(
   // checkeamos que el email sea un email
   check("email", "El email no es válido").isEmail(),
   function (req, res) {
+    let datos = {};
+    datos.conf = req.app.locals.configuracion
+    if (req.session.user !== undefined) {
+      datos.session = req.session.user;
+    }
+
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.render("login", { errores: errors.array() });
+      return res.render("login", { datos, errores: errors.array() });
     }
     //Si no hay errores, continuamos
     const { email, contrasena } = req.body;
@@ -54,7 +60,7 @@ router.post(
           });
 
         if (!errors.isEmpty())
-          return res.render("login", { errores: errors.array() });
+          return res.render("login", { datos, errores: errors.array() });
 
         bcrypt.compare(contrasena, usr.contraseña, (err, valid) => {
           if (err) {
@@ -67,7 +73,7 @@ router.post(
             errors.errors.push({
               msg: "Contraseña incorrecta",
             });
-            return res.render("login", { errores: errors.array() });
+            return res.render("login", { datos, errores: errors.array() });
           }
         });
       }
@@ -113,12 +119,17 @@ router.post(
     /^[a-zA-Z0-9]+@ucm.es$/
   ),
   (req, res, next) => {
+    let datos = {};
+    datos.conf = req.app.locals.configuracion
+    if (req.session.user !== undefined) {
+      datos.session = req.session.user;
+    }
+    
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.render("registroUsuario", { errores: errors.array() });
+      return res.render("registroUsuario", { datos, errores: errors.array() });
     }
     // Si no hay errores, recogemos los datos del formulario
-    let datos = {};
     datos.nombre = req.body.nombre;
     datos.apellidos = req.body.apellidos;
     datos.facultad = req.body.facultad;
@@ -140,7 +151,7 @@ router.post(
           });
         }
         if (!errors.isEmpty()) {
-          return res.render("registroUsuario", { errores: errors.array() });
+          return res.render("registroUsuario", { datos, errores: errors.array() });
         } else {
           daoUsuario.insertarUsuario(datos, (err, usr) => {
             if (err) {
@@ -166,7 +177,6 @@ router.post(
 router.delete("/logout", function (req, res, next) {
   req.session.destroy(function (err) {
     if (!err) {
-      res.send("Log Out!");
       res.redirect("/");
     } else next(err);
   });
