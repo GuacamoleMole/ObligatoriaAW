@@ -16,7 +16,7 @@ const daoInstalaciones = new DAOInstalaciones();
 const storage = multer.memoryStorage(); // Almacenar los datos en memoria en lugar de en archivos
 const upload = multer({ storage: storage });
 const router = Router();
-const { verificarAutenticacion, soloAdmin, actualizarSession } = require('../middlewares/acceso');
+const { verificarAutenticacion, soloAdmin, actualizarSession, mismoUsuario } = require('../middlewares/acceso');
 const DAOMensajes = require("../database/DAOMensajes");
 const daoMensajes = new DAOMensajes();
 
@@ -126,9 +126,19 @@ router.post(
     }
     
     let errors = validationResult(req);
+
+    // Comprobamos el tamaño del archivo (300KB limit)
+    const tamMaximoArchivo = 300 * 1024; // 300KB in bytes
+    if (req.file.size > tamMaximoArchivo) {
+      errors.errors.push({
+            msg: "La imagen introducida es demasiado grande. Tamaño máximo de imagen: 300KB",
+          });
+    }
+
     if (!errors.isEmpty()) {
       return res.render("registroUsuario", { datos, errores: errors.array() });
     }
+
     // Si no hay errores, recogemos los datos del formulario
     datos.nombre = req.body.nombre;
     datos.apellidos = req.body.apellidos;
@@ -259,7 +269,7 @@ router.get("/:id", verificarAutenticacion, actualizarSession, (req, res, next) =
   });
 });
 
-router.get("/:id/reservas", verificarAutenticacion,actualizarSession, (req, res, next) => {
+router.get("/:id/reservas", verificarAutenticacion,actualizarSession, mismoUsuario, (req, res, next) => {
   let datos = {};
   const id = Number(req.params.id);
   if (isNaN(id)) {
@@ -282,7 +292,6 @@ router.get("/:id/reservas", verificarAutenticacion,actualizarSession, (req, res,
       if (req.session.user !== undefined) {
         datos.session = req.session.user;
       }
-      console.group(datos.reservas);
       datos.conf = req.app.locals.configuracion;
       res.render("misReservas", { datos });
     }
@@ -314,14 +323,12 @@ router.put("/admin/validar/:id", (req, res, next) => {
   daoUsuario.validarUsuario(id, (err) => {
     if (err) next(err);
     else {
-      console.log(id);
       const idOrigen = req.session.user.id;
       const idDestino = id;
       const asunto = "Bienvenido/a";
       const mensaje = "¡Bienvenido/a a la aplicación! Ahora podrás ver y enviar tus mensajes, así como hacer reservas en las distintas instalaciones.";
       daoMensajes.enviarMensaje({ idOrigen, idDestino, mensaje, asunto }, (err, idM) => {
         if (err) {
-          console.log("hubo error");
           console.log(err);
           next(err);
         }
@@ -379,6 +386,10 @@ router.get("/admin/crearInstalacion",verificarAutenticacion, actualizarSession,s
 
 router.get("/admin/configuracionSistema",verificarAutenticacion, actualizarSession, soloAdmin, (req, res, next) => {
   let datos = {};
+  if (req.session.user !== undefined) {
+    datos.session = req.session.user;
+  }
+  datos.conf = req.app.locals.configuracion
 
   if (req.session.user !== undefined) {
     datos.session = req.session.user;
@@ -403,11 +414,26 @@ router.post(
     /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g
   ),
   (req, res, next) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.render("registroUsuario", { errores: errors.array() });
-    }
     let datos = {};
+    if (req.session.user !== undefined) {
+      datos.session = req.session.user;
+    }
+    datos.conf = req.app.locals.configuracion
+
+    let errors = validationResult(req);
+
+    // Comprobamos el tamaño del archivo (300KB limit)
+    const tamMaximoArchivo = 300 * 1024; // 300KB in bytes
+    if (req.file.size > tamMaximoArchivo) {
+      errors.errors.push({
+            msg: "La imagen introducida es demasiado grande. Tamaño máximo de imagen: 300KB",
+          });
+    }
+
+    if (!errors.isEmpty()) {
+      return res.render("configuracionSistema", { datos, errores: errors.array() });
+    }
+
     datos.nombre = req.body.nombre;
     datos.calle = req.body.direccion;
     datos.ciudad = req.body.ciudad;

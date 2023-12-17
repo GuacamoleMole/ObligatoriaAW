@@ -41,7 +41,18 @@ router.post(
     if(req.session.user !== undefined){
       datos.session = req.session.user;
     }
+    datos.conf = req.app.locals.configuracion
+    
     let errors = validationResult(req);
+
+    // Comprobamos el tamaño del archivo (300KB limit)
+    const tamMaximoArchivo = 300 * 1024; // 300KB in bytes
+    if (req.file.size > tamMaximoArchivo) {
+      errors.errors.push({
+            msg: "La imagen introducida es demasiado grande. Tamaño máximo de imagen: 300KB",
+          });
+    }
+
     if (!errors.isEmpty()) {
       return res.render("crearInstalacion", { datos: datos, errores: errors.array(), exitoReserva: false });
     }

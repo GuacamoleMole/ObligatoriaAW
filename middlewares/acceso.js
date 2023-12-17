@@ -44,8 +44,21 @@ function soloAdmin(req, res, next) {
     }
 }
 
+//comprueba si el usuario que accede a la página es el mismo que el de la url
+function mismoUsuario(req, res, next) {
+    // Comprueba si el usuario está autenticado
+    if (req.session.user.id.toString() === req.params.id) {
+      return next();
+    } else {
+      const error = new Error("Acceso Denegado, no eres el dueño de estas reservas");
+      error.status = 401;
+      next(error);
+    }
+}
+
 module.exports = {
     verificarAutenticacion,
     soloAdmin,
-    actualizarSession
+    actualizarSession,
+    mismoUsuario
 };

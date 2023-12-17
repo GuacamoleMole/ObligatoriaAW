@@ -8,6 +8,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 html {
   height: 100%; /* Necesario para que el footer se quede abajo */
