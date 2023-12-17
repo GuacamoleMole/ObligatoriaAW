@@ -93,7 +93,7 @@ router.get("/busqueda", verificarAutenticacion, actualizarSession, soloAdmin, (r
   if(filtros.facultad !== 'todos'){
     sql += ` AND USU.facultad = '${filtros.facultad}'`;
   }
-  if (filtros.instalacion !== 'todas')
+  if (filtros.instalacion !== 'todos')
   {
     sql += ` AND INS.nombre = '${filtros.instalacion}'`;
   }

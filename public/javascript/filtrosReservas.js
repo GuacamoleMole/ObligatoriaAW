@@ -12,13 +12,17 @@ $(document).ready(function () {
         }); 
         $('.form-select').each(function(index, element) {
             const valorSeleccionado = $(element).val();
-            if (valorSeleccionado !== null && valorSeleccionado !== '') {
-                let etiqueta = $(element).attr('id');
-                const valorOptionSeleccionado = $(element).find('option:selected').val();
-                filtros[etiqueta] = valorOptionSeleccionado; // Agrega al objeto JSON
+            let etiqueta = $(element).attr('id');
+            let valorOptionSeleccionado ; 
+            if(valorSeleccionado === '') {
+                valorOptionSeleccionado = 'todos';
             }
+            else
+            {
+                valorOptionSeleccionado = $(element).find('option:selected').val();
+            }
+            filtros[etiqueta] = valorOptionSeleccionado; // Agrega al objeto JSON
         }); 
-    
         // Enviar la petición AJAX
         $.ajax({
             url: '/reserva/busqueda',
