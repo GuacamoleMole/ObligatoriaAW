@@ -106,6 +106,27 @@ class DAOReservas {
     });
   }
 
+  eliminarReserva(id, callback) {
+    this.pool.getConnection((err, connection) => {
+      if (err) {
+        callback(err);
+      } else {
+        connection.query(
+          reservasQueries.eliminarReserva,
+          [id],
+          function (err, rows) {
+            connection.release();
+            if (err) {
+              callback(err, null);
+            } else {
+              callback(null, rows.affectedRows); //devolvemos el numero de filas afectadas
+            }
+          }
+        );
+      }
+    });
+  }
+
   terminarConexion(callback) {
     this.pool.end();
   }

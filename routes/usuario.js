@@ -282,6 +282,7 @@ router.get("/:id/reservas", verificarAutenticacion,actualizarSession, (req, res,
       if (req.session.user !== undefined) {
         datos.session = req.session.user;
       }
+      console.group(datos.reservas);
       datos.conf = req.app.locals.configuracion;
       res.render("misReservas", { datos });
     }

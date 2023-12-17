@@ -129,4 +129,15 @@ router.get("/busqueda", verificarAutenticacion, actualizarSession, soloAdmin, (r
   });
 });
 
+router.delete("/:id", function (req, res, next) {
+  id = req.params.id;
+  daoReservas.eliminarReserva(id, (err, result) => {
+    if (err) {
+      next(err);
+    } else {
+      res.status(200).json(result);
+    }
+  });
+});
+
 module.exports = router;

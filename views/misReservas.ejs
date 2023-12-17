@@ -7,8 +7,12 @@
         <link rel="stylesheet" href="/stylesheets/style.css">
         <link rel="icon" type="image/x-icon" href="/imagen/logo?v=<%= Date.now() %>">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Bootstrap Font Icon CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="/javascript/reserva.js"></script>
     </head>
     <body>
         <!-- En el header, pasarle el email para saber si está o no logeado el usuario -->
@@ -26,14 +30,32 @@
                         <div class="headerMensaje headerReserva ps-4 pb-3">
                             <span>Instalación: <span class="datosReserva"><%= reserva.nombre %></span></span>
                             <div class="row">
-                                <div class="col-md-6">Fecha: <span class="datosReserva"><%= reserva.fecha %></span></div>
+                                <div class="col-md-4">Fecha: <span class="datosReserva"><%= reserva.fecha %></span></div>
                                 <div class="col-md-3">Hora inicio: <span class="datosReserva"><%= reserva.hora_inicio.slice(0, 5) %></span></div>
                                 <div class="col-md-3">Hora fin: <span class="datosReserva"><%= reserva.hora_fin.slice(0, 5) %></span></div>
+                                <div class="col-md-2"><button class="btn btn-danger btnIdReserva" title="Cancelar reserva" data-bs-toggle="modal" data-reservaID="<%=reserva.id%>" data-userID="<%=datos.session.id%>" data-bs-target="#modalConfirmar"><i class="bi bi-trash-fill"></i></button></div>
                             </div>
                         </div>
                     </div>
                 <% }); %>
             <% } %>
+        </div>
+
+         <!-- Modal confirmacion cancelar reserva -->
+         <div class="modal fade" id="modalConfirmar" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalConfirmar" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Estas seguro?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Botón para cancelar reserva -->
+                        <button type="button" class="btn btn-danger"  id="btnCancelarReserva">Sí, cancelar reserva</button>
+                        <!-- Botón para cerrar el modal sin cancelar la reserva -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, volver</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <%- include("footer", {conf: datos.conf}) %>
